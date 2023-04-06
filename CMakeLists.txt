@@ -3,7 +3,10 @@ project(Aquarium VERSION 0.1.0)
 
 add_subdirectory(libs/raylib)
 
-add_executable(Aquarium main.cpp)
+add_executable(Aquarium 
+                main.cpp
+                src/fish.cpp
+                src/fish.h)
 
 target_link_libraries(${PROJECT_NAME} raylib)
 
