@@ -15,7 +15,7 @@ Rock::Rock()
 
 void Rock::Draw()
 {
-    DrawTriangle(this->position, this->pfd[0], this->pfd[1], this->colorbody);
+    DrawTriangle(this->pfd[0], this->pfd[1], this->pfd[2], this->colorbody);
 }
 
 void Rock::Init()
@@ -23,20 +23,19 @@ void Rock::Init()
     float r = size / (2 * sqrt(3));
     float r2 = size / 2;
     this->pfd[0] = {
+        this->position.x,
+        this->position.y
+    };
+    this->pfd[1] = {
         this->position.x - r,
         this->position.y + this->size};
-    this->pfd[1] = {
+    this->pfd[2] = {
         this->position.x + r,
         this->position.y + this->size
     };
-    this->clone_pfd[0] = {
-        position.x, position.y
-    };
-    this->clone_pfd[1] = {
-        this->pfd[0].x, this->pfd[0].y
-    };
-    this->clone_pfd[2] = {
-        this->pfd[1].x, this->pfd[1].y
-    };
     this->Draw();
+}
+
+Vector2 *Rock::get_pfd() {
+    return this->pfd;
 }

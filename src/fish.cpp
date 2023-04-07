@@ -71,19 +71,23 @@ void Fish::Draw()
     DrawTriangle(this->position, this->pfd[3], this->pfd[4], this->colorbody);
 }
 
-int Fish::Look(Rock *rock)
-{  
-    Vector2 vec = this->pfd[0];
-    Ray ray = { {vec.x, vec.y}, {this->direction.x, this->direction.y}};
+Danger Fish::Look(Rock *rock)
+{
+    Danger danger = { 0, WHITE,  this->step};
     for (int i = 0; i < MAX_ROCK; i++) {
-        RayCollision col = GetRayCollisionTriangle(ray, rock[i].clone_pfd[0], rock[i].clone_pfd[1], rock[i].clone_pfd[2]);
-        if (col.hit) {
-            std::cout << "Yeah hit !!" << std::endl;
-            return (int)col.distance;
+        Vector2 *rock_pfd = rock[i].get_pfd();
+        for (int j = 1; j <= this->step; j++) {
+            Vector2 point = {position.x + (direction.x * j), position.y + (direction.y * j)};
+            if (CheckCollisionPointTriangle(point, rock_pfd[0], rock_pfd[1], rock_pfd[2])) {
+                if (danger.distance > j) {
+                    danger.ishit = true;
+                    danger.color = rock[i].get_colorbody();
+                    danger.distance = j;
+                }
+            }
         }
     }
-    // DrawRay(ray, WHITE);
-    return 0;
+    return danger;
 }
 
 Vector2 GetRandomVector()
@@ -116,9 +120,13 @@ bool Fish::CheckWall()
 
 void Fish::Run(Rock *rock)
 {
-    this->Look(rock);
     if (this->step > 0 && !this->CheckWall())
     {
+        Danger danger = this->Look(rock);
+        if (danger.ishit && danger.distance - this->speed < this->size) {
+            this->step = 0;
+            return;
+        }
         this->step -= this->speed;
         this->position.x += this->direction.x * this->speed;
         this->position.y += this->direction.y * this->speed;

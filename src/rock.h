@@ -6,8 +6,9 @@
 class Rock : Entity
 {
 public:
-    Vector3 *clone_pfd = new Vector3[MAX_POINTS];
     Rock();
     void Init();
     void Draw();
+    Vector2 *get_pfd();
+    Color get_colorbody() { return this->colorbody; }
 };
