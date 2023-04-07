@@ -2,7 +2,7 @@
 #include <math.h>
 
 #define MASS2H (float)sqrt(3) / 2
-#define MAX_DIST 300
+#define MAX_DIST 200
 #define RAD90 90 * DEG2RAD
 
 Fish::Fish(unsigned int mass, Vector2 pos)
