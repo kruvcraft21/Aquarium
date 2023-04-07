@@ -1,7 +1,6 @@
 ﻿#include "fish.h"
 #include <math.h>
 
-#define MASS2H (float)sqrt(3) / 2
 #define MAX_DIST 200
 #define RAD90 90 * DEG2RAD
 
@@ -44,7 +43,7 @@ void Fish::Init()
 {
     float posx = this->position.x, posy = this->position.y;
     float rad = this->rotate;
-    float h = this->size * MASS2H;
+    float h = this->size * SIZE2H;
     float r = (float)this->size / 2;
     this->pfd[0] = {
         posx + (h * sinf(rad)),

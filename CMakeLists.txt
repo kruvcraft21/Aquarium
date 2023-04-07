@@ -4,10 +4,13 @@ project(Aquarium VERSION 0.1.0)
 add_subdirectory(libs/raylib)
 
 add_library(water_world STATIC
+    src/water_entity.h
     src/aquarium.h
     src/aquarium.cpp
     src/fish.cpp
-    src/fish.h)
+    src/fish.h
+    src/rock.h
+    src/rock.cpp)
 
 target_link_libraries(water_world PUBLIC raylib)
 
