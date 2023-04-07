@@ -9,7 +9,7 @@ void Aquarium::Init() {
     InitWindow(this->width, this->heigth, "Aquarium");
     SetTargetFPS(60);
     this->fish = new Fish[MAX_FISH];
-    this->rock = new Rock[10];
+    this->rock = new Rock[MAX_ROCK];
     this->Run();
 }
 
@@ -24,7 +24,7 @@ void Aquarium::Run() {
             }
             for (int i = 0; i < MAX_FISH; i++) {
                 this->fish[i].Init();
-                this->fish[i].Run();
+                this->fish[i].Run(this->rock);
             }
             DrawFPS(10, 10);
         EndDrawing();

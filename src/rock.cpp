@@ -29,5 +29,14 @@ void Rock::Init()
         this->position.x + r,
         this->position.y + this->size
     };
+    this->clone_pfd[0] = {
+        position.x, position.y
+    };
+    this->clone_pfd[1] = {
+        this->pfd[0].x, this->pfd[0].y
+    };
+    this->clone_pfd[2] = {
+        this->pfd[1].x, this->pfd[1].y
+    };
     this->Draw();
 }

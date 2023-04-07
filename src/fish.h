@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "water_entity.h"
+#include "rock.h"
 
 #define RAD45 (45 * PI) / 180
 
@@ -19,8 +20,8 @@ private:
 public:
     void Init();
     void Draw();
-    int Look();
-    void Run();
+    int Look(Rock *rock);
+    void Run(Rock *rock);
     bool CheckWall();
     Fish(unsigned int mass, Vector2 pos);
     Fish();

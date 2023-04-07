@@ -3,8 +3,6 @@
 #include "fish.h"
 #include "rock.h"
 
-#define MAX_FISH 10
-
 class Aquarium
 {
 private:

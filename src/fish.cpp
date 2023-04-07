@@ -1,5 +1,6 @@
 ﻿#include "fish.h"
 #include <math.h>
+#include <iostream>
 
 #define MAX_DIST 200
 #define RAD90 90 * DEG2RAD
@@ -70,11 +71,18 @@ void Fish::Draw()
     DrawTriangle(this->position, this->pfd[3], this->pfd[4], this->colorbody);
 }
 
-int Fish::Look()
+int Fish::Look(Rock *rock)
 {  
     Vector2 vec = this->pfd[0];
     Ray ray = { {vec.x, vec.y}, {this->direction.x, this->direction.y}};
-    DrawRay(ray, WHITE);
+    for (int i = 0; i < MAX_ROCK; i++) {
+        RayCollision col = GetRayCollisionTriangle(ray, rock[i].clone_pfd[0], rock[i].clone_pfd[1], rock[i].clone_pfd[2]);
+        if (col.hit) {
+            std::cout << "Yeah hit !!" << std::endl;
+            return (int)col.distance;
+        }
+    }
+    // DrawRay(ray, WHITE);
     return 0;
 }
 
@@ -106,9 +114,9 @@ bool Fish::CheckWall()
     return a || b;
 }
 
-void Fish::Run()
+void Fish::Run(Rock *rock)
 {
-    this->Look();
+    this->Look(rock);
     if (this->step > 0 && !this->CheckWall())
     {
         this->step -= this->speed;
