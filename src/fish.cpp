@@ -3,21 +3,22 @@
 
 #define MAX_DIST 200
 #define RAD90 90 * DEG2RAD
+#define MAX_MASS 4
 
 Fish::Fish(unsigned int mass, Vector2 pos)
 {
-    this->mass = mass % 4;
+    this->mass = mass % MAX_MASS;
     this->size = mass * 10;
     this->position = pos;
-    this->speed = 4 - mass;
+    this->speed = MAX_MASS - mass;
     this->choose_color();
 }
 
 Fish::Fish()
 {
-    this->mass = GetRandomValue(1, 3);
+    this->mass = GetRandomValue(1, MAX_MASS - 1);
     this->size = mass * 10;
-    this->speed = 4 - mass;
+    this->speed = MAX_MASS - mass;
     this->position = {(float)GetRandomValue(40, (float)GetScreenWidth() - 40), (float)GetRandomValue(40, (float)GetScreenHeight() - 40)};
     this->choose_color();
 }
@@ -70,7 +71,10 @@ void Fish::Draw()
 }
 
 int Fish::Look()
-{
+{  
+    Vector2 vec = this->pfd[0];
+    Ray ray = { {vec.x, vec.y}, {this->direction.x, this->direction.y}};
+    DrawRay(ray, WHITE);
     return 0;
 }
 
@@ -104,9 +108,10 @@ bool Fish::CheckWall()
 
 void Fish::Run()
 {
+    this->Look();
     if (this->step > 0 && !this->CheckWall())
     {
-        this->step--;
+        this->step -= this->speed;
         this->position.x += this->direction.x * this->speed;
         this->position.y += this->direction.y * this->speed;
     }
