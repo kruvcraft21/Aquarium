@@ -1,31 +1,8 @@
 #include <iostream>
-#include "raylib.h"
-#include <math.h>
-#include "src/fish.h"
+#include "src/aquarium.h"
 
 int main(void)
 {
-
-    const int screenWidth = 800;
-    const int screenHeight = 450;
-
-    InitWindow(screenWidth, screenHeight, "Accvarium");
-    SetTargetFPS(60);
-
-    Fish fish;
-    
-    int angle = 0;
-
-    while (!WindowShouldClose()) {
-
-        BeginDrawing();
-            ClearBackground(SKYBLUE);
-            fish.set_rot(angle++);
-            fish.Draw();
-            DrawFPS(10, 10);
-        EndDrawing();
-        angle++;
-    }
-
+    Aquarium().Init();
     return 0;
 }

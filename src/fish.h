@@ -15,6 +15,7 @@ private:
     Color colorbody;
     Color coloreye;
     Vector2 position;
+    void choose_color();
 
 public:
     void Init();

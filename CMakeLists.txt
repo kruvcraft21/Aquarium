@@ -3,12 +3,19 @@ project(Aquarium VERSION 0.1.0)
 
 add_subdirectory(libs/raylib)
 
-add_executable(Aquarium 
-                main.cpp
-                src/fish.cpp
-                src/fish.h)
+add_library(water_world STATIC
+    src/aquarium.h
+    src/aquarium.cpp
+    src/fish.cpp
+    src/fish.h)
 
-target_link_libraries(${PROJECT_NAME} raylib)
+target_link_libraries(water_world PUBLIC raylib)
+
+add_executable(Aquarium 
+    main.cpp)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC 
+    water_world)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
