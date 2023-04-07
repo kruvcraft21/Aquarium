@@ -12,15 +12,22 @@ private:
     int mass;
     Vector2* pfd = new Vector2[MAX_POINTS]; // points for draw
     float rotate = 0;
+    int size;
     Color colorbody;
     Color coloreye;
     Vector2 position;
+    int step = 0;
+    Vector2 direction;
+    int speed = 1;
     void choose_color();
+    void set_route();
 
 public:
     void Init();
     void Draw();
-    void set_rot(float rot);
-    Fish(int mass, Vector2 pos);
+    int Look();
+    void Run();
+    bool CheckWall();
+    Fish(unsigned int mass, Vector2 pos);
     Fish();
 };

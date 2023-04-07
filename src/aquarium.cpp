@@ -1,12 +1,12 @@
 ﻿#include "aquarium.h"
 
 Aquarium::Aquarium() {
-    this->heigth = 450;
-    this->width = 800;
+    this->heigth = AQUARIUM_HEIGTH;
+    this->width = AQUARIUM_WIDTH;
 }
 
 void Aquarium::Init() {
-    InitWindow(this->width, this->heigth, "Accvarium");
+    InitWindow(this->width, this->heigth, "Aquarium");
     SetTargetFPS(60);
     this->fish = new Fish[MAX_FISH];
     this->Run();
@@ -21,7 +21,8 @@ void Aquarium::Run() {
             ClearBackground(SKYBLUE);
             for (int i = 0; i < MAX_FISH; i++) {
                 this->fish[i].Init();
-                this->fish[i].set_rot(angle);
+                this->fish[i].Run();
+                // this->fish[i].set_rot(angle);
             }
             DrawFPS(10, 10);
         EndDrawing();
