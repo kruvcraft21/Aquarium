@@ -105,7 +105,7 @@ bool Fish::CheckWall()
 
 void Fish::Run()
 {
-    if (this->step > 0 && !this->CheckWall() && GetRandomValue(0, 100) > 2)
+    if (this->step > 0 && !this->CheckWall())
     {
         this->step--;
         this->position.x += this->direction.x * this->speed;
