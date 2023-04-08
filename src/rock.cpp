@@ -1,12 +1,12 @@
 ﻿#include "rock.h"
 #include <math.h>
 
-#define MAX_HEIGTH_ROCK AQUARIUM_HEIGTH - 40
-#define MIN_HEIGTH_ROCK AQUARIUM_HEIGTH - (AQUARIUM_HEIGTH / 8)
+#define ZONA_ROCK_MIN AQUARIUM_HEIGTH - (AQUARIUM_HEIGTH / 5)
+#define ZONA_ROCK_MAX AQUARIUM_HEIGTH - 40
 
 Rock::Rock()
 {
-    int posy = GetRandomValue(MIN_HEIGTH_ROCK, MAX_HEIGTH_ROCK);
+    int posy = GetRandomValue(ZONA_ROCK_MIN, ZONA_ROCK_MAX);
     int posx = GetRandomValue(0, AQUARIUM_WIDTH);
     this->position = {(float)posx, (float)posy};
     this->size = AQUARIUM_HEIGTH - posy;
