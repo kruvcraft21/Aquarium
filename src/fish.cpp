@@ -78,7 +78,8 @@ Danger Fish::Look(Rock *rock)
         Vector2 *rock_pfd = rock[i].get_pfd();
         for (int j = 1; j <= this->step; j++) {
             Vector2 point = {position.x + (direction.x * j), position.y + (direction.y * j)};
-            if (CheckCollisionPointTriangle(point, rock_pfd[0], rock_pfd[1], rock_pfd[2])) {
+            if (CheckCollisionPointTriangle(point, rock_pfd[0], rock_pfd[1], rock_pfd[2]) ||
+                CheckCollisionPointCircle(point, rock_pfd[0], (float)this->size)) {
                 if (danger.distance > j) {
                     danger.ishit = true;
                     danger.color = rock[i].get_colorbody();
@@ -123,7 +124,7 @@ void Fish::Run(Rock *rock)
     if (this->step > 0 && !this->CheckWall())
     {
         Danger danger = this->Look(rock);
-        if (danger.ishit && danger.distance - this->speed < this->size) {
+        if (danger.ishit && danger.distance - this->size < this->size) {
             this->step = 0;
             return;
         }
