@@ -19,7 +19,7 @@ void Aquarium::Run() {
 
         BeginDrawing();
             ClearBackground(SKYBLUE);
-            for (int i = 0; i < 10; i ++) {
+            for (int i = 0; i < MAX_ROCK; i ++) {
                 rock[i].Init();
             }
             for (int i = 0; i < MAX_FISH; i++) {
