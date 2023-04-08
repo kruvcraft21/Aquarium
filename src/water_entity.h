@@ -5,7 +5,8 @@
 #define AQUARIUM_HEIGTH 450
 #define AQUARIUM_WIDTH 800
 #define MAX_POINTS 3
-#define SIZE2H (float)sqrt(3) / 2
+#define ZONA_ROCK_MIN AQUARIUM_HEIGTH - (AQUARIUM_HEIGTH / 5)
+#define ZONA_ROCK_MAX AQUARIUM_HEIGTH - 40
 #define MAX_FISH 10
 #define MAX_ROCK 10
 
