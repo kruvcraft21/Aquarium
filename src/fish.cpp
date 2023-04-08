@@ -22,8 +22,8 @@ Fish::Fish()
     this->size = mass * 10;
     this->speed = MAX_MASS - mass;
     this->position = {
-        (float)GetRandomValue(MAX_SIZE, GetScreenWidth() - MAX_SIZE),
-        (float)GetRandomValue(MAX_SIZE, GetScreenHeight() - MAX_SIZE)};
+        (float)GetRandomValue(MAX_SIZE, AQUARIUM_WIDTH - MAX_SIZE),
+        (float)GetRandomValue(MAX_SIZE, ZONA_ROCK_MIN - MAX_SIZE)};
     this->choose_color();
 }
 
@@ -64,25 +64,53 @@ void Fish::Draw()
     DrawLineStrip(this->pfd, MAX_POINTS, this->colorbody);
 }
 
+void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle *obstacle) {
+    int next = 0;
+    for (int current = 0; current < points_cout; current++) {
+        next = current + 1;
+        if (next == points_cout) {
+            next = 0;
+        }
+
+        float current_pointx = points[current].x;
+        float current_pointy = points[current].y;
+        float next_pointx = points[next].x;
+        float next_pointy = points[next].y;
+        float end_liney = line[1].y;
+        float end_linex = line[1].x;
+        float start_liney = line[0].y;
+        float start_linex = line[0].x;
+
+        float gamma = (next_pointy - current_pointy)*(end_linex - start_linex)
+             - (next_pointx-current_pointx)*(end_liney-start_liney);
+
+        float uA = ((next_pointx-current_pointx)*(start_liney-current_pointy) 
+             - (next_pointy-current_pointy)*(start_linex-current_pointx)) / gamma;
+        float uB = ((end_linex-start_linex)*(start_liney-current_pointy) 
+             - (end_liney-start_liney)*(start_linex-current_pointx)) / gamma;
+        
+        if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+            obstacle->ishit = true;
+            int dist = uA * (end_linex-start_linex);
+            if (dist < obstacle->distance) {
+                obstacle->distance = dist;
+            }
+        }
+    }
+}
+
 Obstacle Fish::Look(Rock *rock)
 {
     Obstacle danger = {0, WHITE, this->distance};
     for (int i = 0; i < MAX_ROCK; i++)
     {
         Vector2 *rock_pfd = rock[i].get_pfd();
-        for (int j = 1; j <= this->distance; j++)
-        {
-            Vector2 point = {position.x + (direction.x * j), position.y + (direction.y * j)};
-            if (CheckCollisionPointTriangle(point, rock_pfd[0], rock_pfd[1], rock_pfd[2]) ||
-                CheckCollisionPointCircle(point, rock_pfd[0], (float)this->size))
-            {
-                if (danger.distance > j)
-                {
-                    danger.ishit = true;
-                    danger.color = rock[i].get_colorbody();
-                    danger.distance = j;
-                }
-            }
+        Vector2 *line_dir = new Vector2[2];
+        line_dir[0] = {position.x + (direction.x * 1), position.y + (direction.y * 1)};
+        line_dir[1] = {position.x + (direction.x * this->distance), position.y + (direction.y * this->distance)};
+        CheckCollision(line_dir, rock_pfd, 3, &danger);
+        if (danger.ishit) {
+            danger.color = rock[i].get_colorbody();
         }
     }
     return danger;
