@@ -5,12 +5,12 @@
 
 #define RAD45 (45 * PI) / 180
 
-typedef struct Danger
+typedef struct Obstacle
 {
     bool ishit;
     Color color;
     int distance;
-} Danger;
+} Obstacle;
 
 class Fish : Entity
 {
@@ -18,7 +18,7 @@ private:
     int mass;
     float rotate = 0;
     Color coloreye;
-    int step = 0;
+    int distance = 0;
     Vector2 direction;
     int speed = 1;
     void choose_color();
@@ -27,7 +27,7 @@ private:
 public:
     void Init();
     void Draw();
-    Danger Look(Rock *rock);
+    Obstacle Look(Rock *rock);
     void Run(Rock *rock);
     bool CheckWall();
     Fish(unsigned int mass, Vector2 pos);

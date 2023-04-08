@@ -1,10 +1,11 @@
 ﻿#include "fish.h"
 #include <math.h>
-#include <iostream>
 
 #define MAX_DIST 200
+#define MIN_DIST 10
 #define RAD90 90 * DEG2RAD
 #define MAX_MASS 4
+#define MAX_SIZE MAX_MASS * 10
 
 Fish::Fish(unsigned int mass, Vector2 pos)
 {
@@ -20,7 +21,9 @@ Fish::Fish()
     this->mass = GetRandomValue(1, MAX_MASS - 1);
     this->size = mass * 10;
     this->speed = MAX_MASS - mass;
-    this->position = {(float)GetRandomValue(40, (float)GetScreenWidth() - 40), (float)GetRandomValue(40, (float)GetScreenHeight() - 40)};
+    this->position = {
+        (float)GetRandomValue(MAX_SIZE, GetScreenWidth() - MAX_SIZE),
+        (float)GetRandomValue(MAX_SIZE, GetScreenHeight() - MAX_SIZE)};
     this->choose_color();
 }
 
@@ -71,16 +74,20 @@ void Fish::Draw()
     DrawTriangle(this->position, this->pfd[3], this->pfd[4], this->colorbody);
 }
 
-Danger Fish::Look(Rock *rock)
+Obstacle Fish::Look(Rock *rock)
 {
-    Danger danger = { 0, WHITE,  this->step};
-    for (int i = 0; i < MAX_ROCK; i++) {
+    Obstacle danger = {0, WHITE, this->distance};
+    for (int i = 0; i < MAX_ROCK; i++)
+    {
         Vector2 *rock_pfd = rock[i].get_pfd();
-        for (int j = 1; j <= this->step; j++) {
+        for (int j = 1; j <= this->distance; j++)
+        {
             Vector2 point = {position.x + (direction.x * j), position.y + (direction.y * j)};
             if (CheckCollisionPointTriangle(point, rock_pfd[0], rock_pfd[1], rock_pfd[2]) ||
-                CheckCollisionPointCircle(point, rock_pfd[0], (float)this->size)) {
-                if (danger.distance > j) {
+                CheckCollisionPointCircle(point, rock_pfd[0], (float)this->size))
+            {
+                if (danger.distance > j)
+                {
                     danger.ishit = true;
                     danger.color = rock[i].get_colorbody();
                     danger.distance = j;
@@ -106,7 +113,7 @@ Vector2 GetRandomVector()
 void Fish::set_route()
 {
     this->direction = GetRandomVector();
-    this->step = GetRandomValue(10, MAX_DIST);
+    this->distance = GetRandomValue(MIN_DIST, MAX_DIST);
     this->rotate = (float)atan2(direction.y, direction.x) + RAD90;
 }
 
@@ -121,14 +128,15 @@ bool Fish::CheckWall()
 
 void Fish::Run(Rock *rock)
 {
-    if (this->step > 0 && !this->CheckWall())
+    if (this->distance > 0 && !this->CheckWall())
     {
-        Danger danger = this->Look(rock);
-        if (danger.ishit && danger.distance - this->size < this->size) {
-            this->step = 0;
+        Obstacle danger = this->Look(rock);
+        if (danger.ishit && danger.distance - this->size <= this->size)
+        {
+            this->distance = 0;
             return;
         }
-        this->step -= this->speed;
+        this->distance -= this->speed;
         this->position.x += this->direction.x * this->speed;
         this->position.y += this->direction.y * this->speed;
     }
