@@ -48,21 +48,12 @@ void Fish::Init()
 {
     float posx = this->position.x, posy = this->position.y;
     float rad = this->rotate;
-    float h = this->size * SIZE2H;
-    float r = (float)this->size / 2;
+    float r = (float)this->size;
     this->pfd[0] = {
-        posx + (h * sinf(rad)),
-        posy - (h * cosf(rad))};
-    this->pfd[1] = {
-        posx - (r * (cosf(rad))),
-        posy - (r * (sinf(rad)))};
-    this->pfd[2] = {
-        posx + (r * cosf(rad)),
-        posy + (r * sinf(rad))};
-    this->pfd[3] = {
         posx - (r * (cosf(rad - RAD45))),
         posy - (r * (sinf(rad - RAD45)))};
-    this->pfd[4] = {
+    this->pfd[1] = position;
+    this->pfd[2] = {
         posx + (r * cosf(rad + RAD45)),
         posy + (r * sinf(rad + RAD45))};
     this->Draw();
@@ -70,8 +61,7 @@ void Fish::Init()
 
 void Fish::Draw()
 {
-    DrawTriangle(this->pfd[0], this->pfd[1], this->pfd[2], this->colorbody);
-    DrawTriangle(this->position, this->pfd[3], this->pfd[4], this->colorbody);
+    DrawLineStrip(this->pfd, MAX_POINTS, this->colorbody);
 }
 
 Obstacle Fish::Look(Rock *rock)
@@ -131,7 +121,7 @@ void Fish::Run(Rock *rock)
     if (this->distance > 0 && !this->CheckWall())
     {
         Obstacle danger = this->Look(rock);
-        if (danger.ishit && danger.distance - this->size <= this->size)
+        if (danger.ishit && danger.distance - speed <= this->size)
         {
             this->distance = 0;
             return;

@@ -4,7 +4,7 @@
 
 #define AQUARIUM_HEIGTH 450
 #define AQUARIUM_WIDTH 800
-#define MAX_POINTS 5
+#define MAX_POINTS 3
 #define SIZE2H (float)sqrt(3) / 2
 #define MAX_FISH 10
 #define MAX_ROCK 10
