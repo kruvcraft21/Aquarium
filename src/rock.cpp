@@ -15,17 +15,14 @@ Rock::Rock()
 
 void Rock::Draw()
 {
-    DrawTriangle(this->pfd[0], this->pfd[1], this->pfd[2], this->colorbody);
+    DrawTriangleStrip(this->pfd, MAX_ROCK, this->colorbody);
 }
 
 void Rock::Init()
 {
-    float r = size / (2 * sqrt(3));
-    float r2 = size / 2;
-    this->pfd[0] = {
-        this->position.x,
-        this->position.y
-    };
+    float r = size / (2.0f * (float)sqrt(3));
+    float r2 = size / 2.0f;
+    this->pfd[0] = this->position;
     this->pfd[1] = {
         this->position.x - r,
         this->position.y + this->size};
