@@ -41,7 +41,6 @@ void Fish::choose_color()
         this->colorbody = BLACK;
         break;
     }
-    this->coloreye = WHITE;
 }
 
 void Fish::Init()
