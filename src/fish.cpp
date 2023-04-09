@@ -11,7 +11,7 @@ Fish::Fish(unsigned int mass, Vector2 pos)
 {
     this->mass = mass % MAX_MASS;
     this->size = mass * 10;
-    this->position = pos;
+    this->Coord = pos;
     this->speed = MAX_MASS - mass;
     this->choose_color();
 }
@@ -21,7 +21,7 @@ Fish::Fish()
     this->mass = GetRandomValue(1, MAX_MASS - 1);
     this->size = mass * 10;
     this->speed = MAX_MASS - mass;
-    this->position = {
+    this->Coord = {
         (float)GetRandomValue(MAX_SIZE, AQUARIUM_WIDTH - MAX_SIZE),
         (float)GetRandomValue(MAX_SIZE, ZONA_ROCK_MIN - MAX_SIZE)};
     this->choose_color();
@@ -46,13 +46,13 @@ void Fish::choose_color()
 
 void Fish::Init()
 {
-    float posx = this->position.x, posy = this->position.y;
+    float posx = this->Coord.x, posy = this->Coord.y;
     float rad = this->rotate;
     float r = (float)this->size;
     this->pfd[0] = {
         posx - (r * (cosf(rad - RAD45))),
         posy - (r * (sinf(rad - RAD45)))};
-    this->pfd[1] = position;
+    this->pfd[1] = Coord;
     this->pfd[2] = {
         posx + (r * cosf(rad + RAD45)),
         posy + (r * sinf(rad + RAD45))};
@@ -106,8 +106,8 @@ Obstacle Fish::Look(Rock *rock)
     {
         Vector2 *rock_pfd = rock[i].get_pfd();
         Vector2 *line_dir = new Vector2[2];
-        line_dir[0] = {position.x + (direction.x * 1), position.y + (direction.y * 1)};
-        line_dir[1] = {position.x + (direction.x * this->distance), position.y + (direction.y * this->distance)};
+        line_dir[0] = {Coord.x + (direction.x * 1), Coord.y + (direction.y * 1)};
+        line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)};
         CheckCollision(line_dir, rock_pfd, 3, &danger);
         if (danger.ishit) {
             danger.color = rock[i].get_colorbody();
@@ -137,8 +137,8 @@ void Fish::set_route()
 
 bool Fish::CheckWall()
 {
-    int posx = (int)this->position.x + (int)(this->size * this->direction.x);
-    int posy = (int)this->position.y + (int)(this->size * this->direction.y);
+    int posx = (int)this->Coord.x + (int)(this->size * this->direction.x);
+    int posy = (int)this->Coord.y + (int)(this->size * this->direction.y);
     bool a = posx > AQUARIUM_WIDTH || posx < 0;
     bool b = posy > AQUARIUM_HEIGTH || posy < 0;
     return a || b;
@@ -149,14 +149,14 @@ void Fish::Run(Rock *rock)
     if (this->distance > 0 && !this->CheckWall())
     {
         Obstacle danger = this->Look(rock);
-        if (danger.ishit && danger.distance - speed <= this->size)
+        if (danger.ishit && danger.distance - speed <= this->size * 2)
         {
             this->distance = 0;
             return;
         }
         this->distance -= this->speed;
-        this->position.x += this->direction.x * this->speed;
-        this->position.y += this->direction.y * this->speed;
+        this->Coord.x += this->direction.x * this->speed;
+        this->Coord.y += this->direction.y * this->speed;
     }
     else
     {
