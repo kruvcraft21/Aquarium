@@ -17,7 +17,6 @@ class Fish : Entity
 private:
     int mass;
     float rotate = 0;
-    Color coloreye;
     int distance = 0;
     Vector2 direction;
     int speed = 1;
