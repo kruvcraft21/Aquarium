@@ -16,7 +16,7 @@ protected:
     Vector2 *pfd = new Vector2[MAX_POINTS]; // points for draw
     Color colorbody;
     int size;
-    Vector2 position;
+    Vector2 Coord;
 
 public:
     virtual void Init() = 0;

@@ -5,6 +5,10 @@
 
 class Rock : Entity
 {
+private:
+    float r1 = 0;
+    float r2 = 0;
+
 public:
     Rock();
     void Init();
