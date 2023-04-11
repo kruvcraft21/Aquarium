@@ -49,12 +49,12 @@ void Fish::Init()
     float rad = this->rotate;
     float r = (float)this->size;
     this->pfd[0] = {
-        posx - (r * (cosf(rad - RAD45))),
-        posy - (r * (sinf(rad - RAD45)))};
+        posx - (r * (cosf(rad - RAD60))),
+        posy - (r * (sinf(rad - RAD60)))};
     this->pfd[1] = Coord;
     this->pfd[2] = {
-        posx + (r * cosf(rad + RAD45)),
-        posy + (r * sinf(rad + RAD45))};
+        posx + (r * cosf(rad + RAD60)),
+        posy + (r * sinf(rad + RAD60))};
     this->Draw();
 }
 

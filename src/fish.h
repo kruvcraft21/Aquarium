@@ -3,7 +3,7 @@
 #include "water_entity.h"
 #include "rock.h"
 
-#define RAD45 45.0f * DEG2RAD
+#define RAD60 60.0f * DEG2RAD
 
 typedef struct Obstacle
 {
