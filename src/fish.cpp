@@ -63,13 +63,41 @@ void Fish::Draw()
     DrawLineStrip(this->pfd, MAX_POINTS, this->colorbody);
 }
 
-void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle *obstacle) {
+bool lineLine(
+    float current_pointx,
+    float current_pointy,
+    float next_pointx,
+    float next_pointy,
+    float start_linex,
+    float start_liney,
+    float end_linex,
+    float end_liney,
+    float &dist)
+{
+    float gamma = (next_pointy - current_pointy) * (end_linex - start_linex) 
+        - (next_pointx - current_pointx) * (end_liney - start_liney);
+
+    float uA = ((next_pointx - current_pointx) * (start_liney - current_pointy) 
+        - (next_pointy - current_pointy) * (start_linex - current_pointx)) / gamma;
+    float uB = ((end_linex - start_linex) * (start_liney - current_pointy) 
+        - (end_liney - start_liney) * (start_linex - current_pointx)) / gamma;
+
+    if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
+    {
+        dist = uA * (end_linex - start_linex);
+        return true;
+    }
+
+    return false;
+}
+
+void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &obstacle)
+{
+    float dist = obstacle.distance;
     int next = 0;
-    for (int current = 0; current < points_cout; current++) {
-        next = current + 1;
-        if (next == points_cout) {
-            next = 0;
-        }
+    for (int current = 0; current < points_cout; current++)
+    {
+        next = (current + 1) % points_cout;
 
         float current_pointx = points[current].x;
         float current_pointy = points[current].y;
@@ -79,20 +107,12 @@ void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle *o
         float end_linex = line[1].x;
         float start_liney = line[0].y;
         float start_linex = line[0].x;
-
-        float gamma = (next_pointy - current_pointy)*(end_linex - start_linex)
-             - (next_pointx-current_pointx)*(end_liney-start_liney);
-
-        float uA = ((next_pointx-current_pointx)*(start_liney-current_pointy) 
-             - (next_pointy-current_pointy)*(start_linex-current_pointx)) / gamma;
-        float uB = ((end_linex-start_linex)*(start_liney-current_pointy) 
-             - (end_liney-start_liney)*(start_linex-current_pointx)) / gamma;
-        
-        if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
-            obstacle->ishit = true;
-            int dist = uA * (end_linex-start_linex);
-            if (dist < obstacle->distance) {
-                obstacle->distance = dist;
+        if (lineLine(current_pointx, current_pointy, next_pointx, next_pointy, start_linex, start_liney, end_linex, end_liney, dist))
+        {
+            obstacle.ishit = true;
+            if ((int)dist < obstacle.distance)
+            {
+                obstacle.distance = (int)dist;
             }
         }
     }
@@ -107,8 +127,9 @@ Obstacle Fish::Look(Rock *rock)
         Vector2 *line_dir = new Vector2[2];
         line_dir[0] = {Coord.x + (direction.x * 1), Coord.y + (direction.y * 1)};
         line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)};
-        CheckCollision(line_dir, rock_pfd, 3, &danger);
-        if (danger.ishit) {
+        CheckCollision(line_dir, rock_pfd, 3, danger);
+        if (danger.ishit)
+        {
             danger.color = rock[i].get_colorbody();
         }
     }
@@ -148,10 +169,15 @@ void Fish::Run(Rock *rock)
     if (this->distance > 0 && !this->CheckWall())
     {
         Obstacle danger = this->Look(rock);
-        if (danger.ishit && danger.distance - speed <= this->size * 2)
+        if (danger.ishit)
         {
-            this->distance = 0;
-            return;
+            if (danger.distance - (speed * size) <= this->size) {
+                this->distance = 0;
+                return;
+            }
+            else {
+                this->distance = danger.distance - (speed * size);
+            }
         }
         this->distance -= this->speed;
         this->Coord.x += this->direction.x * this->speed;

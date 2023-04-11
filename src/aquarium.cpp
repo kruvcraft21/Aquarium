@@ -7,7 +7,7 @@ Aquarium::Aquarium() {
 
 void Aquarium::Init() {
     InitWindow(this->width, this->heigth, "Aquarium");
-    SetTargetFPS(60);
+    SetTargetFPS(30);
     this->fish = new Fish[MAX_FISH];
     this->rock = new Rock[MAX_ROCK];
     this->Run();
