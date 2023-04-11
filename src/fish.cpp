@@ -72,7 +72,7 @@ bool lineLine(
     float start_liney,
     float end_linex,
     float end_liney,
-    float &dist)
+    int &dist)
 {
     float gamma = (next_pointy - current_pointy) * (end_linex - start_linex) 
         - (next_pointx - current_pointx) * (end_liney - start_liney);
@@ -84,7 +84,7 @@ bool lineLine(
 
     if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
     {
-        dist = uA * (end_linex - start_linex);
+        dist = (int)(uA * (end_linex - start_linex));
         return true;
     }
 
@@ -93,7 +93,7 @@ bool lineLine(
 
 void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &obstacle)
 {
-    float dist = obstacle.distance;
+    int dist = obstacle.distance;
     int next = 0;
     for (int current = 0; current < points_cout; current++)
     {
@@ -110,9 +110,9 @@ void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &o
         if (lineLine(current_pointx, current_pointy, next_pointx, next_pointy, start_linex, start_liney, end_linex, end_liney, dist))
         {
             obstacle.ishit = true;
-            if ((int)dist < obstacle.distance)
+            if (dist < obstacle.distance)
             {
-                obstacle.distance = (int)dist;
+                obstacle.distance = dist;
             }
         }
     }
