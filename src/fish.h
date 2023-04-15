@@ -25,7 +25,6 @@ private:
 
 public:
     void Init();
-    void Draw();
     Obstacle Look(Rock *rock);
     void Run(Rock *rock);
     bool CheckWall();

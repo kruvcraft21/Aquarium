@@ -14,11 +14,6 @@ Rock::Rock()
     this->r2 = GetRandomValue(0, this->size);
 }
 
-void Rock::Draw()
-{
-    DrawTriangleFan(this->pfd, MAX_POINTS, this->colorbody);
-}
-
 void Rock::Init()
 {
     float pos_x = this->Coord.x, pos_y = this->Coord.y;

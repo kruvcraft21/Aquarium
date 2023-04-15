@@ -14,7 +14,6 @@ private:
 public:
     Rock();
     void Init();
-    void Draw();
     Vector2 *get_pfd();
     Color get_colorbody() { return this->colorbody; }
 };

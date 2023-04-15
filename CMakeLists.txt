@@ -5,6 +5,7 @@ add_subdirectory(libs/raylib)
 
 add_library(water_world STATIC
     src/water_entity.h
+    src/water_entity.cpp
     src/aquarium.h
     src/aquarium.cpp
     src/fish.cpp

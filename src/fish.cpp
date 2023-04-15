@@ -63,11 +63,6 @@ void Fish::Init()
     this->Draw();
 }
 
-void Fish::Draw()
-{
-    DrawTriangleFan(this->pfd, MAX_POINTS, this->colorbody);
-}
-
 bool lineLine(
     float current_pointx,
     float current_pointy,
