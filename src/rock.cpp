@@ -16,20 +16,11 @@ Rock::Rock()
 
 void Rock::Draw()
 {
-    // DrawTriangleStrip(this->pfd, 3, this->colorbody);
     DrawTriangleFan(this->pfd, MAX_POINTS, this->colorbody);
 }
 
 void Rock::Init()
 {
-    // this->pfd[0] = this->Coord;
-    // this->pfd[1] = {
-    //     this->Coord.x - this->r1,
-    //     this->Coord.y + this->size};
-    // this->pfd[2] = {
-    //     this->Coord.x + this->r2,
-    //     this->Coord.y + this->size
-    // };
     float pos_x = this->Coord.x, pos_y = this->Coord.y;
     this->pfd[0] = {
         pos_x - this->offset_side1.x,

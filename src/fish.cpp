@@ -1,6 +1,5 @@
 ﻿#include "fish.h"
 #include <math.h>
-#include <iostream>
 
 #define MAX_DIST 200
 #define MIN_DIST 10
@@ -67,7 +66,6 @@ void Fish::Init()
 void Fish::Draw()
 {
     DrawTriangleFan(this->pfd, MAX_POINTS, this->colorbody);
-    // DrawLineStrip(this->pfd, MAX_POINTS, this->colorbody);
 }
 
 bool lineLine(
@@ -93,7 +91,6 @@ bool lineLine(
         float distX = uA * (end_linex - start_linex);
         float distY = uA * (end_liney - start_liney);
         dist = (int)floor(sqrt( (distX*distX) + (distY*distY) ));
-        // std::cout << dist << std::endl;
         return true;
     }
 
