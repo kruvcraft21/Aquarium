@@ -1,5 +1,6 @@
 ﻿#include "fish.h"
 #include <math.h>
+#include <iostream>
 
 #define MAX_DIST 200
 #define MIN_DIST 10
@@ -87,7 +88,12 @@ bool lineLine(
 
     if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
     {
-        dist = (int)(uA * (end_linex - start_linex));
+        float pos_x = start_linex + (uA * (end_linex - start_linex));
+        float pos_y = start_liney + (uA * (end_liney - start_liney)); 
+        float distX = uA * (end_linex - start_linex);
+        float distY = uA * (end_liney - start_liney);
+        dist = (int)floor(sqrt( (distX*distX) + (distY*distY) ));
+        // std::cout << dist << std::endl;
         return true;
     }
 
@@ -98,6 +104,10 @@ void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &o
 {
     int dist = obstacle.distance;
     int next = 0;
+    float end_liney = line[1].y;
+    float end_linex = line[1].x;
+    float start_liney = line[0].y;
+    float start_linex = line[0].x;
     for (int current = 0; current < points_cout; current++)
     {
         next = (current + 1) % points_cout;
@@ -106,10 +116,8 @@ void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &o
         float current_pointy = points[current].y;
         float next_pointx = points[next].x;
         float next_pointy = points[next].y;
-        float end_liney = line[1].y;
-        float end_linex = line[1].x;
-        float start_liney = line[0].y;
-        float start_linex = line[0].x;
+
+
         if (lineLine(current_pointx, current_pointy, next_pointx, next_pointy, start_linex, start_liney, end_linex, end_liney, dist))
         {
             obstacle.ishit = true;
@@ -128,9 +136,10 @@ Obstacle Fish::Look(Rock *rock)
     {
         Vector2 *rock_pfd = rock[i].get_pfd();
         Vector2 *line_dir = new Vector2[2];
-        line_dir[0] = {Coord.x + (direction.x * 1), Coord.y + (direction.y * 1)};
+        line_dir[0] = Coord;
         line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)};
-        CheckCollision(line_dir, rock_pfd, 3, danger);
+        
+        CheckCollision(line_dir, rock_pfd, MAX_POINTS, danger);
         if (danger.ishit)
         {
             danger.color = rock[i].get_colorbody();
@@ -174,15 +183,8 @@ void Fish::Run(Rock *rock)
         Obstacle danger = this->Look(rock);
         if (danger.ishit)
         {
-            float distance_to_collision = danger.distance - (speed * size);
-            if (distance_to_collision <= this->size)
-            {
-                this->distance = 0;
-                return;
-            }
-            else
-            {
-                this->distance = distance_to_collision;
+            if ((danger.distance - (size * speed)) <= size) {
+                this->set_route();
             }
         }
         this->distance -= this->speed;
