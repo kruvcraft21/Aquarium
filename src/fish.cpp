@@ -174,14 +174,15 @@ void Fish::Run(Rock *rock)
         Obstacle danger = this->Look(rock);
         if (danger.ishit)
         {
-            if (danger.distance - (speed * size) <= this->size)
+            float distance_to_collision = danger.distance - (speed * size);
+            if (distance_to_collision <= this->size)
             {
                 this->distance = 0;
                 return;
             }
             else
             {
-                this->distance = danger.distance - (speed * size);
+                this->distance = distance_to_collision;
             }
         }
         this->distance -= this->speed;
