@@ -7,18 +7,16 @@
 #define MAX_MASS 4
 #define MAX_SIZE MAX_MASS * 10
 
-Fish::Fish(unsigned int m, Vector2 pos) :
-    mass(m),
-    speed(MAX_MASS - m)
+Fish::Fish(unsigned int m, Vector2 pos) : mass(m),
+                                          speed(MAX_MASS - m)
 {
     this->size = this->mass * 10;
     this->Coord = pos;
     this->choose_color();
 }
 
-Fish::Fish() : 
-    mass(GetRandomValue(1, MAX_MASS - 1)),
-    speed(MAX_MASS - mass)
+Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1)),
+               speed(MAX_MASS - mass)
 {
     this->size = mass * 10;
     this->Coord = {
@@ -48,19 +46,27 @@ void Fish::Init()
     float posx = this->Coord.x, posy = this->Coord.y;
     float rad = this->rotate;
     float r = (float)this->size;
+    float hight = r / 5.0f;
     this->pfd[0] = {
+        posx + (hight * sinf(rad)),
+        posy - (hight * cosf(rad))};
+    this->pfd[1] = {
         posx - (r * (cosf(rad - RAD60))),
         posy - (r * (sinf(rad - RAD60)))};
-    this->pfd[1] = Coord;
     this->pfd[2] = {
+        posx - (hight * sinf(rad)),
+        posy + (hight * cosf(rad))};
+    this->pfd[3] = {
         posx + (r * cosf(rad + RAD60)),
         posy + (r * sinf(rad + RAD60))};
+
     this->Draw();
 }
 
 void Fish::Draw()
 {
-    DrawLineStrip(this->pfd, MAX_POINTS, this->colorbody);
+    DrawTriangleFan(this->pfd, MAX_POINTS, this->colorbody);
+    // DrawLineStrip(this->pfd, MAX_POINTS, this->colorbody);
 }
 
 bool lineLine(
@@ -74,13 +80,10 @@ bool lineLine(
     float end_liney,
     int &dist)
 {
-    float gamma = (next_pointy - current_pointy) * (end_linex - start_linex) 
-        - (next_pointx - current_pointx) * (end_liney - start_liney);
+    float gamma = (next_pointy - current_pointy) * (end_linex - start_linex) - (next_pointx - current_pointx) * (end_liney - start_liney);
 
-    float uA = ((next_pointx - current_pointx) * (start_liney - current_pointy) 
-        - (next_pointy - current_pointy) * (start_linex - current_pointx)) / gamma;
-    float uB = ((end_linex - start_linex) * (start_liney - current_pointy) 
-        - (end_liney - start_liney) * (start_linex - current_pointx)) / gamma;
+    float uA = ((next_pointx - current_pointx) * (start_liney - current_pointy) - (next_pointy - current_pointy) * (start_linex - current_pointx)) / gamma;
+    float uB = ((end_linex - start_linex) * (start_liney - current_pointy) - (end_liney - start_liney) * (start_linex - current_pointx)) / gamma;
 
     if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
     {
@@ -171,11 +174,13 @@ void Fish::Run(Rock *rock)
         Obstacle danger = this->Look(rock);
         if (danger.ishit)
         {
-            if (danger.distance - (speed * size) <= this->size) {
+            if (danger.distance - (speed * size) <= this->size)
+            {
                 this->distance = 0;
                 return;
             }
-            else {
+            else
+            {
                 this->distance = danger.distance - (speed * size);
             }
         }
