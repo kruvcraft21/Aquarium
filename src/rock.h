@@ -8,6 +8,8 @@ class Rock : Entity
 private:
     float r1 = 0;
     float r2 = 0;
+    Vector2 offset_side1 = {0, 0};
+    Vector2 offset_side2 = {0, 0};
 
 public:
     Rock();
