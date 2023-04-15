@@ -1,8 +1,8 @@
 ﻿#include "fish.h"
 #include <math.h>
 
-#define MAX_DIST 200
-#define MIN_DIST 10
+#define MAX_DIST 50
+#define MIN_DIST 3
 #define RAD90 90 * DEG2RAD
 #define MAX_MASS 4
 #define MAX_SIZE MAX_MASS * 10
@@ -81,8 +81,6 @@ bool lineLine(
 
     if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
     {
-        float pos_x = start_linex + (uA * (end_linex - start_linex));
-        float pos_y = start_liney + (uA * (end_liney - start_liney)); 
         float distX = uA * (end_linex - start_linex);
         float distY = uA * (end_liney - start_liney);
         dist = (int)floor(sqrt( (distX*distX) + (distY*distY) ));
@@ -123,13 +121,13 @@ void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &o
 
 Obstacle Fish::Look(Rock *rock)
 {
-    Obstacle danger = {0, WHITE, this->distance};
+    Obstacle danger = {0, WHITE,  this->distance};
     for (int i = 0; i < MAX_ROCK; i++)
     {
         Vector2 *rock_pfd = rock[i].get_pfd();
         Vector2 *line_dir = new Vector2[2];
         line_dir[0] = Coord;
-        line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)};
+        line_dir[1] = {Coord.x + (direction.x *  this->distance), Coord.y + (direction.y *  this->distance)};
         
         CheckCollision(line_dir, rock_pfd, MAX_POINTS, danger);
         if (danger.ishit)
@@ -155,7 +153,7 @@ Vector2 GetRandomVector()
 void Fish::set_route()
 {
     this->direction = GetRandomVector();
-    this->distance = GetRandomValue(MIN_DIST, MAX_DIST);
+    this->distance = GetRandomValue(MIN_DIST, MAX_DIST) * this->speed;
     this->rotate = (float)atan2(direction.y, direction.x) + RAD90;
 }
 
@@ -170,15 +168,9 @@ bool Fish::CheckWall()
 
 void Fish::Run(Rock *rock)
 {
-    if (this->distance > 0 && !this->CheckWall())
+    Obstacle obstacle = {0};
+    if (this->distance > 0 && !this->CheckWall() && (!(obstacle = this->Look(rock)).ishit || obstacle.distance - size > size))
     {
-        Obstacle danger = this->Look(rock);
-        if (danger.ishit)
-        {
-            if ((danger.distance - (size * speed)) <= size) {
-                this->set_route();
-            }
-        }
         this->distance -= this->speed;
         this->Coord.x += this->direction.x * this->speed;
         this->Coord.y += this->direction.y * this->speed;
