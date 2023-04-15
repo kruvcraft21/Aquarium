@@ -7,20 +7,20 @@
 #define MAX_MASS 4
 #define MAX_SIZE MAX_MASS * 10
 
-Fish::Fish(unsigned int mass, Vector2 pos)
+Fish::Fish(unsigned int m, Vector2 pos) :
+    mass(m),
+    speed(MAX_MASS - m)
 {
-    this->mass = mass % MAX_MASS;
-    this->size = mass * 10;
+    this->size = this->mass * 10;
     this->Coord = pos;
-    this->speed = MAX_MASS - mass;
     this->choose_color();
 }
 
-Fish::Fish()
+Fish::Fish() : 
+    mass(GetRandomValue(1, MAX_MASS - 1)),
+    speed(MAX_MASS - mass)
 {
-    this->mass = GetRandomValue(1, MAX_MASS - 1);
     this->size = mass * 10;
-    this->speed = MAX_MASS - mass;
     this->Coord = {
         (float)GetRandomValue(MAX_SIZE, AQUARIUM_WIDTH - MAX_SIZE),
         (float)GetRandomValue(MAX_SIZE, ZONA_ROCK_MIN - MAX_SIZE)};

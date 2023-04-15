@@ -15,10 +15,10 @@ typedef struct Obstacle
 class Fish : Entity
 {
 private:
-    int mass;
+    int mass = 1;
     float rotate = 0;
     int distance = 0;
-    Vector2 direction;
+    Vector2 direction = {0, 0};
     int speed = 1;
     void choose_color();
     void set_route();

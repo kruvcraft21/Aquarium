@@ -19,7 +19,6 @@ void Rock::Draw()
 
 void Rock::Init()
 {
-    // float r = this->size / (float)sqrt(3);
     this->pfd[0] = this->Coord;
     this->pfd[1] = {
         this->Coord.x - this->r1,
