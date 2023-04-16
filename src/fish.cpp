@@ -7,9 +7,10 @@
 #define MAX_MASS 4
 #define MAX_SIZE MAX_MASS * 10
 
-Fish::Fish(unsigned int m, Vector2 pos) : mass(m),
-                                          speed(MAX_MASS - m)
+Fish::Fish(unsigned int m, Vector2 pos) : mass((m % (MAX_MASS - 1)) + 1),
+                                          speed(MAX_MASS - mass)
 {
+
     this->size = this->mass * 10;
     this->Coord = pos;
     this->choose_color();
@@ -17,11 +18,11 @@ Fish::Fish(unsigned int m, Vector2 pos) : mass(m),
 
 Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1)),
                speed(MAX_MASS - mass)
+               
 {
     this->size = mass * 10;
-    this->Coord = {
-        (float)GetRandomValue(MAX_SIZE, AQUARIUM_WIDTH - MAX_SIZE),
-        (float)GetRandomValue(MAX_SIZE, ZONA_ROCK_MIN - MAX_SIZE)};
+    this->Coord = {(float)GetRandomValue(MAX_SIZE, AQUARIUM_WIDTH - MAX_SIZE),
+                   (float)GetRandomValue(MAX_SIZE, ZONA_ROCK_MIN - MAX_SIZE)};
     this->choose_color();
 }
 
@@ -43,6 +44,7 @@ void Fish::choose_color()
 
 void Fish::Init()
 {
+    this->speed = MAX_MASS - mass;
     float posx = this->Coord.x, posy = this->Coord.y;
     float rad = this->rotate;
     float r = (float)this->size;
@@ -83,7 +85,7 @@ bool lineLine(
     {
         float distX = uA * (end_linex - start_linex);
         float distY = uA * (end_liney - start_liney);
-        dist = (int)floor(sqrt( (distX*distX) + (distY*distY) ));
+        dist = (int)floor(sqrt((distX * distX) + (distY * distY)));
         return true;
     }
 
@@ -107,7 +109,6 @@ void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &o
         float next_pointx = points[next].x;
         float next_pointy = points[next].y;
 
-
         if (lineLine(current_pointx, current_pointy, next_pointx, next_pointy, start_linex, start_liney, end_linex, end_liney, dist))
         {
             obstacle.ishit = true;
@@ -121,14 +122,13 @@ void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &o
 
 Obstacle Fish::Look(Rock *rock)
 {
-    Obstacle danger = {0, WHITE,  this->distance};
+    Obstacle danger = {0, WHITE, this->distance};
     for (int i = 0; i < MAX_ROCK; i++)
     {
         Vector2 *rock_pfd = rock[i].get_pfd();
         Vector2 *line_dir = new Vector2[2];
         line_dir[0] = Coord;
-        line_dir[1] = {Coord.x + (direction.x *  this->distance), Coord.y + (direction.y *  this->distance)};
-        
+        line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)};
         CheckCollision(line_dir, rock_pfd, MAX_POINTS, danger);
         if (danger.ishit)
         {
