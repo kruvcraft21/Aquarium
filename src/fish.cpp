@@ -26,6 +26,13 @@ Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1)),
     this->choose_color();
 }
 
+void Fish::eats(int m) {
+    int tmp_mass = mass + m;
+    if (tmp_mass <= MAX_MASS) {
+        mass = tmp_mass;
+    }
+}
+
 void Fish::choose_color()
 {
     switch (this->size)
