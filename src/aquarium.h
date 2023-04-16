@@ -2,6 +2,7 @@
 
 #include "fish.h"
 #include "rock.h"
+#include "food.h"
 
 class Aquarium
 {
@@ -10,6 +11,7 @@ private:
     Rock *rock;
     int width;
     int heigth;
+    Food *food = NULL;
 
 
 public:
