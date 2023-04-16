@@ -14,9 +14,7 @@ void Aquarium::Init() {
 }
 
 void Aquarium::Run() {
-    int angle = 0;
     while (!WindowShouldClose()) {
-
         BeginDrawing();
             ClearBackground(SKYBLUE);
             for (int i = 0; i < MAX_ROCK; i ++) {
@@ -46,6 +44,5 @@ void Aquarium::Run() {
 
             DrawFPS(10, 10);
         EndDrawing();
-        angle++;
     }
 }
