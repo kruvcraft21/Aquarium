@@ -2,5 +2,5 @@
 
 void Entity::Draw()
 {
-    DrawTriangleFan(this->pfd, MAX_POINTS, this->colorbody);
+    DrawTriangleFan(this->pfd.get(), MAX_POINTS, this->colorbody);
 }

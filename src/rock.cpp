@@ -37,5 +37,5 @@ void Rock::Init()
 }
 
 Vector2 *Rock::get_pfd() {
-    return this->pfd;
+    return this->pfd.get();
 }

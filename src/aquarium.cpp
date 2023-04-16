@@ -25,20 +25,19 @@ void Aquarium::Run() {
                 this->fish[i].Run(this->rock);
             }
 
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                if (this->food != NULL) {
-                    delete this->food;
-                    this->food = NULL;
-                }
-                this->food = new Food(GetMousePosition());
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                food = std::make_unique<Food>(GetMousePosition());
             }
-            else if (this->food != NULL) {
-                if (!this->food->is_eaten(this->fish)) {
-                    this->food->Draw();
+            else if (food != nullptr)
+            {
+                if (!food->is_eaten(fish))
+                {
+                    food->Draw();
                 }
-                else {
-                    delete this->food;
-                    this->food = NULL;
+                else
+                {
+                    food = nullptr;
                 }
             }
 

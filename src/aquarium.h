@@ -11,7 +11,7 @@ private:
     Rock *rock;
     int width;
     int heigth;
-    Food *food = NULL;
+    std::unique_ptr<Food> food = nullptr;
 
 
 public:

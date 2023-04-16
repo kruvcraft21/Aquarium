@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "raylib.h"
+#include <memory>
+#include <vector>
 
 #define AQUARIUM_HEIGTH 450
 #define AQUARIUM_WIDTH 800
@@ -13,7 +15,7 @@
 class Entity
 {
 protected:
-    Vector2 *pfd = new Vector2[MAX_POINTS]; // points for draw
+    std::unique_ptr<Vector2[]> pfd = std::make_unique<Vector2[]>(MAX_POINTS); // points for draw
     Color colorbody = BLACK;
     int size = 10;
     Vector2 Coord = {AQUARIUM_WIDTH / 2, AQUARIUM_HEIGTH / 2};
