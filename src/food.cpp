@@ -6,15 +6,14 @@ Food::Food(Vector2 pos)
     this->Draw();
 }
 
-bool Food::is_eaten(Fish *fishes)
+bool Food::is_eaten(Fish *fish)
 {
     bool eaten = false;
     for (int i = 0; i < MAX_FISH; i++)
     {
-        Fish fish = fishes[i];
-        if (CheckCollisionPointCircle(fish.get_Coord(), this->Coord, 5)) {
+        if (CheckCollisionPointCircle(fish[i].get_Coord(), this->Coord, 5)) {
             eaten |= true;
-            fishes[i].eats(1);
+            fish[i].eats(1);
         }
     }
     return eaten;
