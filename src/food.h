@@ -10,6 +10,6 @@ private:
 
 public:
     Food(Vector2 pos);
-    bool is_eaten(Fish *fish);
+    bool is_eaten(Fish *fishes);
     void Draw();
 };
