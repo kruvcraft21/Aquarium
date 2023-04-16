@@ -42,6 +42,10 @@ void Fish::choose_color()
     }
 }
 
+Vector2 Fish::get_Coord() {
+    return this->Coord;
+}
+
 void Fish::Init()
 {
     this->speed = MAX_MASS - mass;
