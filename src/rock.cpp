@@ -8,7 +8,7 @@ Rock::Rock()
     int posy = GetRandomValue(ZONA_ROCK_MIN, ZONA_ROCK_MAX); // Случайная координата Y в заданном диапазоне
     int posx = GetRandomValue(0, AQUARIUM_WIDTH); // Случайная координата X в диапазоне ширины аквариума
     Coord = {(float)posx, (float)posy}; // Установка координаты объекта
-    size = AQUARIUM_HEIGTH - posy; // Вычисление размера объекта на основе его Y-координаты
+    size = AQUARIUM_HEIGHT - posy; // Вычисление размера объекта на основе его Y-координаты
 
     // Инициализация цвета и смещений точек объекта
     colorbody = GRAY; // Установка цвета тела объекта

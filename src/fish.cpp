@@ -186,7 +186,7 @@ bool Fish::CheckWall()
     int posx = (int)this->Coord.x + (int)(this->size * this->direction.x);
     int posy = (int)this->Coord.y + (int)(this->size * this->direction.y);
     bool a = posx > AQUARIUM_WIDTH || posx < 0;
-    bool b = posy > AQUARIUM_HEIGTH || posy < 0;
+    bool b = posy > AQUARIUM_HEIGHT || posy < 0;
     return a || b;
 }
 

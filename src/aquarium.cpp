@@ -1,7 +1,7 @@
 ﻿#include "aquarium.h"
 
 Aquarium::Aquarium() {
-    this->heigth = AQUARIUM_HEIGTH;
+    this->heigth = AQUARIUM_HEIGHT;
     this->width = AQUARIUM_WIDTH;
 }
 
