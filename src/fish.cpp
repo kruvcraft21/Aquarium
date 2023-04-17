@@ -8,7 +8,6 @@
 #define MAX_MASS 4
 #define MAX_SIZE MAX_MASS * 10
 #define ROCKCOLOR 2189591295
-#define FOODCOLOR -34012929
 
 Fish::Fish(unsigned int m, Vector2 pos) : mass((m % (MAX_MASS - 1)) + 1),
                                           speed(MAX_MASS - mass)
@@ -27,24 +26,6 @@ Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1)),
     this->Coord = {(float)GetRandomValue(MAX_SIZE, AQUARIUM_WIDTH - MAX_SIZE),
                    (float)GetRandomValue(MAX_SIZE, ZONA_ROCK_MIN - MAX_SIZE)};
     this->choose_color();
-}
-
-void Fish::eats(int m)
-{
-    int tmp_mass = mass + m;
-    // Ограничиваем массу максимально допустимым значением - 1, если превышает
-    if (tmp_mass >= MAX_MASS)
-    {
-        mass = MAX_MASS - 1;
-    }
-    else
-    {
-        mass = tmp_mass;
-    }
-    // Изменяем маршрут рыбы случайным образом после приема пищи
-    if (GetRandomValue(0, 1)) {
-        set_route();
-    }
 }
 
 void Fish::choose_color()
@@ -166,60 +147,7 @@ void CheckCollisionLines(Vector2 *line, Vector2 *points, int points_cout, Obstac
     }
 }
 
-// Функция для проверки пересечения линии и окружности
-bool isLineIntersectCircle(const Vector2 *line, const Vector2& point, int radius) {
-    // Вычисляем векторы между точками начала и конца линии
-    int vectorX = line[1].x - line[0].x;
-    int vectorY = line[1].y - line[0].y;
-
-    // Вычисляем вектор между началом линии и центром окружности
-    int lineToCircleX = point.x - line[0].x;
-    int lineToCircleY = point.y - line[0].y;
-
-    // Вычисляем квадрат расстояния между началом линии и центром окружности
-    int distanceSquared = lineToCircleX * lineToCircleX + lineToCircleY * lineToCircleY;
-
-    // Вычисляем квадрат радиуса окружности
-    int radiusSquared = radius * radius;
-
-    // Проверяем условие пересечения:
-    // Если квадрат расстояния между началом линии и центром окружности
-    // меньше или равен квадрату радиуса окружности,
-    // и проекция вектора между началом линии и концом линии
-    // на вектор между началом линии и центром окружности
-    // лежит внутри отрезка между началом и концом линии,
-    // то линия и окружность пересекаются
-    if (distanceSquared <= radiusSquared &&
-        (vectorX * lineToCircleX + vectorY * lineToCircleY) * (vectorX * lineToCircleX + vectorY * lineToCircleY) <= vectorX * vectorX + vectorY * vectorY) {
-        return true;
-    }
-
-    // Иначе, линия и окружность не пересекаются
-    return false;
-}
-
-void CheckCollisionLinePoint(Vector2 *line, Food *food, Obstacle &obstacle) {
-    Vector2 point = food->get_Coord();
-    if (isLineIntersectCircle(line, point, food->get_radius())) {
-        float distX = point.x - line[0].x;
-        float distY = point.y - line[0].y;
-        int dist = (int)floor(sqrt((distX * distX) + (distY * distY)));
-        std::cout << "is hit" << "-" << dist <<  std::endl;
-        if (obstacle.ishit) {
-            if (dist < obstacle.distance) {
-                obstacle.distance = dist;
-                obstacle.color = food->get_color();
-            }
-        }
-        else {
-            obstacle.ishit = true;
-            obstacle.distance = dist;
-            obstacle.color = food->get_color();
-        }
-    }
-}
-
-Obstacle Fish::Look(Rock *rock, Food *food)
+Obstacle Fish::Look(Rock *rock)
 {
     Obstacle danger = {0, WHITE, this->distance};
     for (int i = 0; i < MAX_ROCK; i++)
@@ -233,7 +161,6 @@ Obstacle Fish::Look(Rock *rock, Food *food)
         {
             danger.color = rock[i].get_colorbody();
         }
-        if (food != NULL) CheckCollisionLinePoint(line_dir, food, danger);
     }
     return danger;
 }
@@ -266,11 +193,11 @@ bool Fish::CheckWall()
     return a || b;
 }
 
-void Fish::Run(Rock *rock, Food *food)
+void Fish::Run(Rock *rock)
 {
     if (this->distance > 0 && !this->CheckWall())
     {
-        Obstacle obstacle = this->Look(rock, food);
+        Obstacle obstacle = this->Look(rock);
         if (obstacle.ishit)
         {
             switch (ColorToInt(obstacle.color))
@@ -281,9 +208,6 @@ void Fish::Run(Rock *rock, Food *food)
                     this->set_route();
                     return;
                 }
-                break;
-            case FOODCOLOR:
-                speed *= 2;
                 break;
             }
         }

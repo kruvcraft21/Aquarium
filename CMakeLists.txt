@@ -11,9 +11,7 @@ add_library(water_world STATIC
     src/fish.cpp
     src/fish.h
     src/rock.h
-    src/rock.cpp
-    src/food.h
-    src/food.cpp)
+    src/rock.cpp)
 
 target_link_libraries(water_world PUBLIC raylib)
 
