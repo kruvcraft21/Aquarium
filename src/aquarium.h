@@ -7,13 +7,13 @@
 class Aquarium
 {
 private:
-    std::unique_ptr<Fish[]> fish;
-    std::unique_ptr<Rock[]> rock;
-    int width;
-    int height;
+    std::unique_ptr<Fish[]> fish; // Указатель на массив объектов Fish
+    std::unique_ptr<Rock[]> rock; // Указатель на массив объектов Rock
+    int width; // Ширина аквариума
+    int height; // Высота аквариума
 
 public:
-    Aquarium();
-    void Init();
-    void Run();
+    Aquarium(); // Конструктор класса Aquarium
+    void Init(); // Метод инициализации аквариума
+    void Run(); // Метод запуска цикла обновления и отрисовки аквариума
 };
