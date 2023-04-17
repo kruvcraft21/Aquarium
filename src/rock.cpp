@@ -11,12 +11,10 @@ Rock::Rock()
     this->offset_side1 = {(float)GetRandomValue(0, this->size), (float)GetRandomValue(ZONA_ROCK_MIN - posy, this->size)};
     this->offset_side2 = {
         (float)GetRandomValue(0, this->size),
-        (float)this->size
-    };
+        (float)this->size};
     this->offset_side3 = {
         (float)GetRandomValue(0, this->size),
-        (float)size
-    };
+        (float)size};
     this->offset_side4 = {(float)GetRandomValue(0, this->size), (float)GetRandomValue(ZONA_ROCK_MIN - posy, this->size)};
 }
 
