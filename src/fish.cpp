@@ -9,8 +9,7 @@
 #define MAX_SIZE MAX_MASS * 10
 #define ROCKCOLOR 2189591295
 
-Fish::Fish(unsigned int m, Vector2 pos) : mass((m % (MAX_MASS - 1)) + 1),
-                                          speed(MAX_MASS - mass)
+Fish::Fish(unsigned int m, Vector2 pos) : mass((m % (MAX_MASS - 1)) + 1)
 {
 
     this->size = this->mass * 10;
@@ -18,9 +17,7 @@ Fish::Fish(unsigned int m, Vector2 pos) : mass((m % (MAX_MASS - 1)) + 1),
     this->choose_color();
 }
 
-Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1)),
-               speed(MAX_MASS - mass)
-
+Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1))
 {
     this->size = mass * 10;
     this->Coord = {(float)GetRandomValue(MAX_SIZE, AQUARIUM_WIDTH - MAX_SIZE),

@@ -24,7 +24,6 @@ private:
     void set_route();
 
 public:
-    void eats(int m);
     Vector2 get_Coord();
     void Init();
     Obstacle Look(Rock *rock);
