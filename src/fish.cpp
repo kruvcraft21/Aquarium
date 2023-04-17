@@ -1,5 +1,6 @@
 ﻿#include "fish.h"
 #include <math.h>
+#include <iostream>
 
 #define MAX_DIST 50
 #define MIN_DIST 3
@@ -165,23 +166,52 @@ void CheckCollisionLines(Vector2 *line, Vector2 *points, int points_cout, Obstac
     }
 }
 
+// Функция для проверки пересечения линии и окружности
+bool isLineIntersectCircle(const Vector2 *line, const Vector2& point, int radius) {
+    // Вычисляем векторы между точками начала и конца линии
+    int vectorX = line[1].x - line[0].x;
+    int vectorY = line[1].y - line[0].y;
+
+    // Вычисляем вектор между началом линии и центром окружности
+    int lineToCircleX = point.x - line[0].x;
+    int lineToCircleY = point.y - line[0].y;
+
+    // Вычисляем квадрат расстояния между началом линии и центром окружности
+    int distanceSquared = lineToCircleX * lineToCircleX + lineToCircleY * lineToCircleY;
+
+    // Вычисляем квадрат радиуса окружности
+    int radiusSquared = radius * radius;
+
+    // Проверяем условие пересечения:
+    // Если квадрат расстояния между началом линии и центром окружности
+    // меньше или равен квадрату радиуса окружности,
+    // и проекция вектора между началом линии и концом линии
+    // на вектор между началом линии и центром окружности
+    // лежит внутри отрезка между началом и концом линии,
+    // то линия и окружность пересекаются
+    if (distanceSquared <= radiusSquared &&
+        (vectorX * lineToCircleX + vectorY * lineToCircleY) * (vectorX * lineToCircleX + vectorY * lineToCircleY) <= vectorX * vectorX + vectorY * vectorY) {
+        return true;
+    }
+
+    // Иначе, линия и окружность не пересекаются
+    return false;
+}
+
 void CheckCollisionLinePoint(Vector2 *line, Food *food, Obstacle &obstacle) {
     Vector2 point = food->get_Coord();
-    if (CheckCollisionPointLine(point, line[0], line[1], food->get_radius())) {
+    if (isLineIntersectCircle(line, point, food->get_radius())) {
+        float distX = point.x - line[0].x;
+        float distY = point.y - line[0].y;
+        int dist = (int)floor(sqrt((distX * distX) + (distY * distY)));
+        std::cout << "is hit" << "-" << dist <<  std::endl;
         if (obstacle.ishit) {
-
-            float distX = point.x - line[0].x;
-            float distY = point.y - line[0].y;
-            int dist = (int)floor(sqrt((distX * distX) + (distY * distY)));
             if (dist < obstacle.distance) {
                 obstacle.distance = dist;
                 obstacle.color = food->get_color();
             }
         }
         else {
-            float distX = point.x - line[0].x;
-            float distY = point.y - line[0].y;
-            int dist = (int)floor(sqrt((distX * distX) + (distY * distY)));
             obstacle.ishit = true;
             obstacle.distance = dist;
             obstacle.color = food->get_color();
