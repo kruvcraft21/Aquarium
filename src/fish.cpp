@@ -1,4 +1,4 @@
-﻿#include "fish.h"
+#include "fish.h"
 #include <math.h>
 
 #define MAX_DIST 50
@@ -6,6 +6,8 @@
 #define RAD90 90 * DEG2RAD
 #define MAX_MASS 4
 #define MAX_SIZE MAX_MASS * 10
+#define ROCKCOLOR 2189591295
+#define FOODCOLOR 0xFDF900FF
 
 Fish::Fish(unsigned int m, Vector2 pos) : mass((m % (MAX_MASS - 1)) + 1),
                                           speed(MAX_MASS - mass)
@@ -58,24 +60,36 @@ Vector2 Fish::get_Coord()
 
 void Fish::Init()
 {
+    // Обновляем скорость на основе массы
     this->speed = MAX_MASS - mass;
-    float posx = this->Coord.x, posy = this->Coord.y;
+
+    // Вычисляем синусы и косинусы углов для повышения производительности
     float rad = this->rotate;
-    float r = (float)this->size;
+    float sin_rad = sinf(rad); // Синус угла поворота
+    float cos_rad = cosf(rad); // Косинус угла поворота
+    float cos_rad_minus_rad60 = cosf(rad - RAD60); // Косинус разницы угла поворота и 60 градусов
+    float sin_rad_minus_rad60 = sinf(rad - RAD60); // Синус разницы угла поворота и 60 градусов
+    float cos_rad_plus_rad60 = cosf(rad + RAD60); // Косинус суммы угла поворота и 60 градусов
+    float sin_rad_plus_rad60 = sinf(rad + RAD60); // Синус суммы угла поворота и 60 градусов
+
+    // Вычисляем координаты точек для отрисовки тела рыбы
+    float posx = this->Coord.x, posy = this->Coord.y; // Координаты центра рыбы
+    float r = static_cast<float>(this->size); // Радиус тела рыбы
     float hight = r / 5.0f;
     this->pfd[0] = {
-        posx + (hight * sinf(rad)),
-        posy - (hight * cosf(rad))};
+        posx + (hight * sin_rad), // Координаты вершины рыбы на основе синуса и косинуса угла поворота
+        posy - (hight * cos_rad)};
     this->pfd[1] = {
-        posx - (r * (cosf(rad - RAD60))),
-        posy - (r * (sinf(rad - RAD60)))};
+        posx - (r * cos_rad_minus_rad60), // Координаты левой боковой рыбы на основе косинуса разницы угла поворота и 60 градусов
+        posy - (r * sin_rad_minus_rad60)}; 
     this->pfd[2] = {
-        posx - (hight * sinf(rad)),
-        posy + (hight * cosf(rad))};
+        posx - (hight * sin_rad), // Координаты нижней точки рыбы на основе синуса и косинуса угла поворота
+        posy + (hight * cos_rad)};
     this->pfd[3] = {
-        posx + (r * cosf(rad + RAD60)),
-        posy + (r * sinf(rad + RAD60))};
+        posx + (r * cos_rad_plus_rad60), // Координаты правой рыбы точки на основе косинуса суммы угла поворота и 60 градусов
+        posy + (r * sin_rad_plus_rad60)};
 
+    // Вызываем метод Draw() для отрисовки рыбы
     this->Draw();
 }
 
