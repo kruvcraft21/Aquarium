@@ -1,4 +1,3 @@
-#include <iostream>
 #include "src/aquarium.h"
 
 int main(void)

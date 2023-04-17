@@ -1,6 +1,5 @@
 ﻿#include "fish.h"
 #include <math.h>
-#include <iostream>
 
 constexpr int MAX_DIST = 50; // Максимальное расстояние для обнаружения препятствий
 constexpr int MIN_DIST = 3; // Минимальное расстояние для обнаружения препятствий
