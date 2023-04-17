@@ -135,7 +135,7 @@ void CheckCollisionLines(Vector2 *line, Vector2 *points, int points_cout, Obstac
 
         if (lineLine(current_pointx, current_pointy, next_pointx, next_pointy, start_linex, start_liney, end_linex, end_liney, dist))
         {
-            obstacle.ishit = true;
+            obstacle.isdetected = true;
             if (dist < obstacle.distance)
             {
                 obstacle.distance = dist;
@@ -154,7 +154,7 @@ Obstacle Fish::Look(Rock *rock)
         line_dir[0] = Coord;
         line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)};
         CheckCollisionLines(line_dir, rock_pfd, MAX_POINTS, danger);
-        if (danger.ishit)
+        if (danger.isdetected)
         {
             danger.color = rock[i].get_colorbody();
         }
@@ -195,7 +195,7 @@ void Fish::Run(Rock *rock)
     if (this->distance > 0 && !this->CheckWall())
     {
         Obstacle obstacle = this->Look(rock);
-        if (obstacle.ishit)
+        if (obstacle.isdetected)
         {
             switch (ColorToInt(obstacle.color))
             {

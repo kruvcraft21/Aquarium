@@ -7,7 +7,7 @@
 
 typedef struct Obstacle
 {
-    bool ishit;
+    bool isdetected;
     Color color;
     int distance;
 } Obstacle;
