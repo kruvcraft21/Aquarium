@@ -10,7 +10,7 @@ private:
     std::unique_ptr<Fish[]> fish;
     std::unique_ptr<Rock[]> rock;
     int width;
-    int heigth;
+    int height;
 
 public:
     Aquarium();

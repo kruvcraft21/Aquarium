@@ -1,12 +1,12 @@
 ﻿#include "aquarium.h"
 
-Aquarium::Aquarium() {
-    this->heigth = AQUARIUM_HEIGHT;
+Aquarium::Aquarium(){
+    this->height = AQUARIUM_HEIGHT;
     this->width = AQUARIUM_WIDTH;
 }
 
 void Aquarium::Init() {
-    InitWindow(this->width, this->heigth, "Aquarium");
+    InitWindow(this->width, this->height, "Aquarium");
     SetTargetFPS(30);
     this->fish = std::make_unique<Fish[]>(MAX_FISH);
     this->rock = std::make_unique<Rock[]>(MAX_ROCK);
