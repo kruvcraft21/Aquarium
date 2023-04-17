@@ -162,7 +162,7 @@ Obstacle Fish::Look(Rock *rock)
     for (int i = 0; i < MAX_ROCK; i++)
     {
         Vector2 *rock_pfd = rock[i].get_pfd();
-        Vector2 *line_dir = new Vector2[2];
+        Vector2 line_dir[2];
         line_dir[0] = Coord;
         line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)};
         CheckCollision(line_dir, rock_pfd, MAX_POINTS, danger);
@@ -204,9 +204,26 @@ bool Fish::CheckWall()
 
 void Fish::Run(Rock *rock)
 {
-    Obstacle obstacle = {0};
-    if (this->distance > 0 && !this->CheckWall() && (!(obstacle = this->Look(rock)).ishit || obstacle.distance - size > size))
+    if (this->distance > 0 && !this->CheckWall())
     {
+        Obstacle obstacle = this->Look(rock);
+        if (obstacle.ishit)
+        {
+            switch (ColorToInt(obstacle.color))
+            {
+            case ROCKCOLOR:
+                if (obstacle.distance - size <= size)
+                {
+                    this->set_route();
+                    return;
+                }
+                break;
+            case FOODCOLOR:
+                speed *= 2;
+                break;
+            }
+        }
+
         this->distance -= this->speed;
         this->Coord.x += this->direction.x * this->speed;
         this->Coord.y += this->direction.y * this->speed;
