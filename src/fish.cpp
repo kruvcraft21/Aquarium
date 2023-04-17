@@ -18,7 +18,7 @@ Fish::Fish(unsigned int m, Vector2 pos) : mass((m % (MAX_MASS - 1)) + 1),
 
 Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1)),
                speed(MAX_MASS - mass)
-               
+
 {
     this->size = mass * 10;
     this->Coord = {(float)GetRandomValue(MAX_SIZE, AQUARIUM_WIDTH - MAX_SIZE),
@@ -26,9 +26,11 @@ Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1)),
     this->choose_color();
 }
 
-void Fish::eats(int m) {
+void Fish::eats(int m)
+{
     int tmp_mass = mass + m;
-    if (tmp_mass <= MAX_MASS) {
+    if (tmp_mass <= MAX_MASS)
+    {
         mass = tmp_mass;
     }
 }
@@ -49,7 +51,8 @@ void Fish::choose_color()
     }
 }
 
-Vector2 Fish::get_Coord() {
+Vector2 Fish::get_Coord()
+{
     return this->Coord;
 }
 
@@ -76,26 +79,34 @@ void Fish::Init()
     this->Draw();
 }
 
-bool lineLine(
-    float current_pointx,
-    float current_pointy,
-    float next_pointx,
-    float next_pointy,
-    float start_linex,
-    float start_liney,
-    float end_linex,
-    float end_liney,
-    int &dist)
+bool lineLine(float current_pointx, float current_pointy, float next_pointx, float next_pointy,
+              float start_linex, float start_liney, float end_linex, float end_liney, int &dist)
 {
-    float gamma = (next_pointy - current_pointy) * (end_linex - start_linex) - (next_pointx - current_pointx) * (end_liney - start_liney);
+    // Вычисление разностей координат для улучшения читаемости кода
+    float dx1 = next_pointx - current_pointx;
+    float dy1 = next_pointy - current_pointy;
+    float dx2 = end_linex - start_linex;
+    float dy2 = end_liney - start_liney;
 
-    float uA = ((next_pointx - current_pointx) * (start_liney - current_pointy) - (next_pointy - current_pointy) * (start_linex - current_pointx)) / gamma;
-    float uB = ((end_linex - start_linex) * (start_liney - current_pointy) - (end_liney - start_liney) * (start_linex - current_pointx)) / gamma;
+    // Вычисление знаменателя для определения точек пересечения
+    float gamma = dy1 * dx2 - dx1 * dy2;
 
+    // Проверка на деление на ноль
+    if (gamma == 0)
+    {
+        return false;
+    }
+
+    // Вычисление параметров uA и uB для определения точек пересечения
+    float uA = ((dx1) * (start_liney - current_pointy) - (dy1) * (start_linex - current_pointx)) / gamma;
+    float uB = ((dx2) * (start_liney - current_pointy) - (dy2) * (start_linex - current_pointx)) / gamma;
+
+    // Проверка на нахождение точек пересечения на отрезках
     if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
     {
-        float distX = uA * (end_linex - start_linex);
-        float distY = uA * (end_liney - start_liney);
+        // Вычисление расстояния между точками пересечения и текущей точкой
+        float distX = uA * dx2;
+        float distY = uA * dy2;
         dist = (int)floor(sqrt((distX * distX) + (distY * distY)));
         return true;
     }
