@@ -7,7 +7,7 @@
 class Aquarium
 {
 private:
-    Fish *fish;
+    std::unique_ptr<Fish[]> fish;
     Rock *rock;
     int width;
     int heigth;

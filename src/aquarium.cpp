@@ -8,7 +8,7 @@ Aquarium::Aquarium() {
 void Aquarium::Init() {
     InitWindow(this->width, this->heigth, "Aquarium");
     SetTargetFPS(30);
-    this->fish = new Fish[MAX_FISH];
+    this->fish = std::make_unique<Fish[]>(MAX_FISH);
     this->rock = new Rock[MAX_ROCK];
     this->Run();
 }
@@ -21,8 +21,8 @@ void Aquarium::Run() {
                 rock[i].Init();
             }
             for (int i = 0; i < MAX_FISH; i++) {
-                this->fish[i].Init();
-                this->fish[i].Run(this->rock);
+                fish[i].Init();
+                fish[i].Run(rock);
             }
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -31,7 +31,7 @@ void Aquarium::Run() {
             }
             else if (food != nullptr)
             {
-                if (!food->is_eaten(fish))
+                if (!food->is_eaten(fish.get()))
                 {
                     food->Draw();
                 }
