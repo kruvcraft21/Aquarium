@@ -2,6 +2,7 @@
 
 #include "water_entity.h"
 #include "rock.h"
+#include "food.h"
 
 #define RAD60 60.0f * DEG2RAD
 
@@ -27,8 +28,8 @@ public:
     void eats(int m);
     Vector2 get_Coord();
     void Init();
-    Obstacle Look(Rock *rock);
-    void Run(Rock *rock);
+    Obstacle Look(Rock *rock, Food *food);
+    void Run(Rock *rock, Food *food);
     bool CheckWall();
     Fish(unsigned int mass, Vector2 pos);
     Fish();

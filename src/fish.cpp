@@ -7,7 +7,7 @@
 #define MAX_MASS 4
 #define MAX_SIZE MAX_MASS * 10
 #define ROCKCOLOR 2189591295
-#define FOODCOLOR 0xFDF900FF
+#define FOODCOLOR -34012929
 
 Fish::Fish(unsigned int m, Vector2 pos) : mass((m % (MAX_MASS - 1)) + 1),
                                           speed(MAX_MASS - mass)
@@ -137,7 +137,7 @@ bool lineLine(float current_pointx, float current_pointy, float next_pointx, flo
     return false;
 }
 
-void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &obstacle)
+void CheckCollisionLines(Vector2 *line, Vector2 *points, int points_cout, Obstacle &obstacle)
 {
     int dist = obstacle.distance;
     int next = 0;
@@ -165,7 +165,31 @@ void CheckCollision(Vector2 *line, Vector2 *points, int points_cout, Obstacle &o
     }
 }
 
-Obstacle Fish::Look(Rock *rock)
+void CheckCollisionLinePoint(Vector2 *line, Food *food, Obstacle &obstacle) {
+    Vector2 point = food->get_Coord();
+    if (CheckCollisionPointLine(point, line[0], line[1], food->get_radius())) {
+        if (obstacle.ishit) {
+
+            float distX = point.x - line[0].x;
+            float distY = point.y - line[0].y;
+            int dist = (int)floor(sqrt((distX * distX) + (distY * distY)));
+            if (dist < obstacle.distance) {
+                obstacle.distance = dist;
+                obstacle.color = food->get_color();
+            }
+        }
+        else {
+            float distX = point.x - line[0].x;
+            float distY = point.y - line[0].y;
+            int dist = (int)floor(sqrt((distX * distX) + (distY * distY)));
+            obstacle.ishit = true;
+            obstacle.distance = dist;
+            obstacle.color = food->get_color();
+        }
+    }
+}
+
+Obstacle Fish::Look(Rock *rock, Food *food)
 {
     Obstacle danger = {0, WHITE, this->distance};
     for (int i = 0; i < MAX_ROCK; i++)
@@ -174,11 +198,12 @@ Obstacle Fish::Look(Rock *rock)
         Vector2 line_dir[2];
         line_dir[0] = Coord;
         line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)};
-        CheckCollision(line_dir, rock_pfd, MAX_POINTS, danger);
+        CheckCollisionLines(line_dir, rock_pfd, MAX_POINTS, danger);
         if (danger.ishit)
         {
             danger.color = rock[i].get_colorbody();
         }
+        if (food != NULL) CheckCollisionLinePoint(line_dir, food, danger);
     }
     return danger;
 }
@@ -211,11 +236,11 @@ bool Fish::CheckWall()
     return a || b;
 }
 
-void Fish::Run(Rock *rock)
+void Fish::Run(Rock *rock, Food *food)
 {
     if (this->distance > 0 && !this->CheckWall())
     {
-        Obstacle obstacle = this->Look(rock);
+        Obstacle obstacle = this->Look(rock, food);
         if (obstacle.ishit)
         {
             switch (ColorToInt(obstacle.color))

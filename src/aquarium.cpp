@@ -22,7 +22,7 @@ void Aquarium::Run() {
             }
             for (int i = 0; i < MAX_FISH; i++) {
                 this->fish[i].Init();
-                this->fish[i].Run(this->rock.get());
+                this->fish[i].Run(this->rock.get(), food.get());
             }
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -31,7 +31,16 @@ void Aquarium::Run() {
             }
             else if (food != nullptr)
             {
-                if (!food->is_eaten(fish.get()))
+                bool eaten = false;
+                for (int i = 0; i < MAX_FISH; i++)
+                {
+                    if (CheckCollisionPointCircle(fish[i].get_Coord(), food->get_Coord(), food->get_radius()))
+                    {
+                        eaten = true;
+                        fish[i].eats(1);
+                    }
+                }
+                if (!eaten)
                 {
                     food->Draw();
                 }

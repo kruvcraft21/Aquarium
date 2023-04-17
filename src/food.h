@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "raylib.h"
-#include "fish.h"
 
 class Food
 {
@@ -12,8 +11,8 @@ private:
 
 public:
     Food(Vector2 pos);
-    bool is_eaten(Fish *fishes);
     void Draw();
     int get_radius();
     Color get_color();
+    Vector2 get_Coord();
 };
