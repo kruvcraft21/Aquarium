@@ -1,4 +1,4 @@
-#include "fish.h"
+﻿#include "fish.h"
 #include <math.h>
 
 #define MAX_DIST 50
@@ -31,9 +31,18 @@ Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1)),
 void Fish::eats(int m)
 {
     int tmp_mass = mass + m;
-    if (tmp_mass <= MAX_MASS)
+    // Ограничиваем массу максимально допустимым значением - 1, если превышает
+    if (tmp_mass >= MAX_MASS)
+    {
+        mass = MAX_MASS - 1;
+    }
+    else
     {
         mass = tmp_mass;
+    }
+    // Изменяем маршрут рыбы случайным образом после приема пищи
+    if (GetRandomValue(0, 1)) {
+        set_route();
     }
 }
 
