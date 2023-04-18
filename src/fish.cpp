@@ -20,11 +20,13 @@ Fish::Fish(unsigned int m, Vector2 pos) : mass((m % (MAX_MASS - 1)) + 1)
 Fish::Fish() : mass(GetRandomValue(1, MAX_MASS - 1))
 {
     this->size = mass * 10; // Установка размера рыбы на основе массы
+    // Установка случайной позиции рыбы
     this->Coord = {(float)GetRandomValue(MAX_SIZE, AQUARIUM_WIDTH - MAX_SIZE),
-                   (float)GetRandomValue(MAX_SIZE, ZONA_ROCK_MIN - MAX_SIZE)}; // Установка случайной позиции рыбы
+                   (float)GetRandomValue(MAX_SIZE, ZONA_ROCK_MIN - MAX_SIZE)}; 
     this->choose_color(); // Вызов метода выбора цвета рыбы
 }
 
+// Внутренний метод для выбора цвета рыбы
 void Fish::choose_color()
 {
     switch (this->size)
@@ -39,11 +41,6 @@ void Fish::choose_color()
             this->colorbody = BLACK; // Устанавливаем черный цвет для всех остальных масс
             break;
     }
-}
-
-Vector2 Fish::get_Coord()
-{
-    return this->Coord;
 }
 
 void Fish::Init()
@@ -64,17 +61,21 @@ void Fish::Init()
     float posx = this->Coord.x, posy = this->Coord.y; // Координаты центра рыбы
     float r = static_cast<float>(this->size); // Радиус тела рыбы
     float hight = r / 5.0f;
+    // Координаты вершины рыбы на основе синуса и косинуса угла поворота
     this->pfd[0] = {
-        posx + (hight * sin_rad), // Координаты вершины рыбы на основе синуса и косинуса угла поворота
+        posx + (hight * sin_rad), 
         posy - (hight * cos_rad)};
+    // Координаты левой боковой точки рыбы на основе угла поворота и 60 градусов
     this->pfd[1] = {
-        posx - (r * cos_rad_minus_rad60), // Координаты левой боковой рыбы на основе косинуса разницы угла поворота и 60 градусов
+        posx - (r * cos_rad_minus_rad60), 
         posy - (r * sin_rad_minus_rad60)}; 
+    // Координаты нижней точки рыбы на основе синуса и косинуса угла поворота
     this->pfd[2] = {
-        posx - (hight * sin_rad), // Координаты нижней точки рыбы на основе синуса и косинуса угла поворота
+        posx - (hight * sin_rad), 
         posy + (hight * cos_rad)};
+    // Координаты правой точки рыбы на основе угла поворота и 60 градусов
     this->pfd[3] = {
-        posx + (r * cos_rad_plus_rad60), // Координаты правой рыбы точки на основе косинуса суммы угла поворота и 60 градусов
+        posx + (r * cos_rad_plus_rad60), 
         posy + (r * sin_rad_plus_rad60)};
 
     // Вызываем метод Draw() для отрисовки рыбы
@@ -129,7 +130,8 @@ void CheckCollisionLines(Vector2 *line, Vector2 *points, int points_count, Obsta
     // Проходим по каждому отрезку, заданному массивом точек
     for (int current = 0; current < points_count; current++)
     {
-        next = (current + 1) % points_count; // Получаем индекс следующей точки в массиве points с использованием операции остатка
+        // Получаем индекс следующей точки в массиве points с использованием операции остатка
+        next = (current + 1) % points_count;
         // Это позволяет обрабатывать случай, когда текущая точка является последней 
         // в массиве, и следующая точка должна быть первой в массиве, чтобы сформировать замкнутый контур из точек.
 
@@ -158,8 +160,8 @@ Obstacle Fish::Look(Rock *rock)
     Vector2 line_dir[2]; // Создаем массив для хранения точек начала и конца линии обзора
 
     line_dir[0] = Coord; // Устанавливаем начальную точку линии обзора равной текущим координатам рыбы
-
-    line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)}; // Рассчитываем конечную точку линии обзора на основе направления и расстояния
+    // Рассчитываем конечную точку линии обзора на основе направления и расстояния
+    line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)}; 
 
     for (int i = 0; i < MAX_ROCK; i++) // Проходим по массиву скал
     {
@@ -170,7 +172,8 @@ Obstacle Fish::Look(Rock *rock)
 
         if (danger.isdetected) // Если обнаружено препятствие
         {
-            danger.color = rock[i].get_colorbody(); // Обновляем цвет опасности в объекте Obstacle с цветом тела текущей скалы
+            // Обновляем цвет опасности в объекте Obstacle с цветом тела текущей скалы
+            danger.color = rock[i].get_colorbody(); 
         }
     }
 
@@ -191,9 +194,12 @@ Vector2 GetRandomVector()
 // Метод для установки нового маршрута движения рыбы
 void Fish::set_route()
 {
-    this->direction = GetRandomVector(); // Устанавливаем случайное направление движения рыбы
-    this->distance = GetRandomValue(MIN_DIST, MAX_DIST) * this->speed; // Устанавливаем случайное расстояние для движения рыбы, учитывая её скорость
-    this->rotate = atan2f(direction.y, direction.x) + RAD90; // Вычисляем угол поворота рыбы на основе её направления, смещенный на 90 градусов
+    // Устанавливаем случайное направление движения рыбы
+    this->direction = GetRandomVector(); 
+    // Устанавливаем случайное расстояние для движения рыбы, учитывая её скорость
+    this->distance = GetRandomValue(MIN_DIST, MAX_DIST) * this->speed;
+    // Вычисляем угол поворота рыбы на основе её направления, смещенный на 90 градусов
+    this->rotate = atan2f(direction.y, direction.x) + RAD90;
 }
 
 // Метод для проверки столкновения с границами аквариума
