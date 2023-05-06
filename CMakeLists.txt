@@ -15,7 +15,7 @@ add_library(water_world STATIC
 
 target_link_libraries(water_world PUBLIC raylib)
 
-add_executable(Aquarium 
+add_executable(${PROJECT_NAME} 
     main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC 
