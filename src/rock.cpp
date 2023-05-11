@@ -1,5 +1,4 @@
 ﻿#include "rock.h"
-#include <math.h>
 
 // Конструктор по умолчанию
 Rock::Rock()
