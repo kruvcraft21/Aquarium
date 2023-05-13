@@ -1,5 +1,4 @@
 ﻿#include "fish.h"
-#include <math.h>
 
 constexpr int MAX_DIST = 50; // Максимальное расстояние для обнаружения препятствий
 constexpr int MIN_DIST = 3; // Минимальное расстояние для обнаружения препятствий
@@ -31,14 +30,17 @@ void Fish::choose_color()
 {
     switch (this->size)
     {
+        // Устанавливаем фиолетовый цвет для массы 1
         case 10:
-            this->colorbody = VIOLET; // Устанавливаем фиолетовый цвет для массы 1
+            this->colorbody = VIOLET;
             break;
+        // Устанавливаем красный цвет для массы 2
         case 20:
-            this->colorbody = RED; // Устанавливаем красный цвет для массы 2
+            this->colorbody = RED;
             break;
+        // Устанавливаем черный цвет для всех остальных масс
         default:
-            this->colorbody = BLACK; // Устанавливаем черный цвет для всех остальных масс
+            this->colorbody = BLACK;
             break;
     }
 }
