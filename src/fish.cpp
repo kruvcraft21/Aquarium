@@ -159,6 +159,7 @@ void CheckCollisionLines(Vector2 *line, Vector2 *points, int points_count, Obsta
 // Метод для поиска препятствий впереди рыбы
 Obstacle Fish::Look()
 {
+    // Получение массива скал
     Rock *rocks = Aquarium::getInstance().get_rocks();
     Obstacle danger = {0, WHITE, this->distance}; // Инициализируем объект Obstacle с начальными значениями
     Vector2 line_dir[2]; // Создаем массив для хранения точек начала и конца линии обзора
