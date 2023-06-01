@@ -16,4 +16,10 @@ public:
     Aquarium(); // Конструктор класса Aquarium
     void Init(); // Метод инициализации аквариума
     void Run(); // Метод запуска цикла обновления и отрисовки аквариума
+    // Метод для создания и получения единственного экземпляра аквариума
+    static Aquarium& getInstance() {
+        static Aquarium instance;
+        return instance;
+    }
+    Rock* get_rocks();
 };

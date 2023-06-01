@@ -1,4 +1,5 @@
 ﻿#include "fish.h"
+#include "aquarium.h"
 
 constexpr int MAX_DIST = 50; // Максимальное расстояние для обнаружения препятствий
 constexpr int MIN_DIST = 3; // Минимальное расстояние для обнаружения препятствий
@@ -156,8 +157,9 @@ void CheckCollisionLines(Vector2 *line, Vector2 *points, int points_count, Obsta
 }
 
 // Метод для поиска препятствий впереди рыбы
-Obstacle Fish::Look(Rock *rock)
+Obstacle Fish::Look()
 {
+    Rock *rocks = Aquarium::getInstance().get_rocks();
     Obstacle danger = {0, WHITE, this->distance}; // Инициализируем объект Obstacle с начальными значениями
     Vector2 line_dir[2]; // Создаем массив для хранения точек начала и конца линии обзора
 
@@ -167,7 +169,7 @@ Obstacle Fish::Look(Rock *rock)
 
     for (int i = 0; i < MAX_ROCK; i++) // Проходим по массиву скал
     {
-        Vector2 *rock_pfd = rock[i].get_pfd(); // Получаем указатель на массив точек контура текущей скалы
+        Vector2 *rock_pfd = rocks[i].get_pfd(); // Получаем указатель на массив точек контура текущей скалы
 
         // Вызываем функцию CheckCollisionLines() с текущими точками линии обзора и точками контура текущей скалы
         CheckCollisionLines(line_dir, rock_pfd, MAX_POINTS, danger);
@@ -175,7 +177,7 @@ Obstacle Fish::Look(Rock *rock)
         if (danger.isdetected) // Если обнаружено препятствие
         {
             // Обновляем цвет опасности в объекте Obstacle с цветом тела текущей скалы
-            danger.color = rock[i].get_colorbody(); 
+            danger.color = rocks[i].get_colorbody(); 
         }
     }
 
@@ -215,13 +217,13 @@ bool Fish::CheckWall()
 }
 
 // Метод для выполнения движения рыбы
-void Fish::Run(Rock *rock)
+void Fish::Run()
 {
     // Проверяем, есть ли еще оставшееся расстояние для плавания и не достигли ли стены
     if (this->distance > 0 && !this->CheckWall())
     {
         // Получаем информацию о ближайшем объекте
-        Obstacle obstacle = this->Look(rock);
+        Obstacle obstacle = this->Look();
         // Если объект обнаружен
         if (obstacle.isdetected)
         {

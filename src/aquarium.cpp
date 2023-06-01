@@ -38,11 +38,16 @@ void Aquarium::Run() {
                 // Инициализация объектов рыбы
                 this->fish[i].Init();
                 // Выполнение движения рыбы и взаимодействия с объектами скалы
-                this->fish[i].Run(this->rock.get());
+                this->fish[i].Run();
             }
             // Отрисовка текущего FPS на экране
             DrawFPS(10, 10);
         // Завершение рисования на экране
         EndDrawing();
     }
+}
+
+Rock *Aquarium::get_rocks()
+{
+    return this->rock.get();
 }
