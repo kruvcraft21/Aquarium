@@ -15,9 +15,11 @@ void Aquarium::Init() {
     // Устанавливаем целевое количество кадров в секунду (FPS) на 30
     SetTargetFPS(30); 
     // Создаем уникальный указатель на массив объектов типа Fish, выделяем память на максимальное количество рыб MAX_FISH
-    this->fish = std::make_unique<Fish[]>(MAX_FISH);
+    this->fishes.clear();
+    this->fishes.resize(MAX_FISH);
     // Создаем уникальный указатель на массив объектов типа Rock, выделяем память на максимальное количество скал MAX_ROCK
-    this->rock = std::make_unique<Rock[]>(MAX_ROCK);
+    this->rocks.resize(MAX_ROCK);
+
     // Запускаем основной цикл выполнения программы в методе Run()
     this->Run(); 
 }
@@ -31,14 +33,22 @@ void Aquarium::Run() {
             // Очистка фона окна, устанавливая его цвет на светло-голубой
             ClearBackground(SKYBLUE);
             // Цикл для инициализации всех скал в аквариуме
-            for (int i = 0; i < MAX_ROCK; i ++) {
-                rock[i].Init();
+            for (auto &r : rocks) 
+            {
+                r.Init();
             }
-            for (int i = 0; i < MAX_FISH; i++) {
+            // for (int i = 0; i < MAX_FISH; i++) {
+            //     // Инициализация объектов рыбы
+            //     this->fish[i].Init();
+            //     // Выполнение движения рыбы и взаимодействия с объектами скалы
+            //     this->fish[i].Run();
+            // }
+            for (auto &fish : fishes) 
+            {
                 // Инициализация объектов рыбы
-                this->fish[i].Init();
+                fish.Init();
                 // Выполнение движения рыбы и взаимодействия с объектами скалы
-                this->fish[i].Run();
+                fish.Run();
             }
             // Отрисовка текущего FPS на экране
             DrawFPS(10, 10);
@@ -47,7 +57,7 @@ void Aquarium::Run() {
     }
 }
 
-Rock *Aquarium::get_rocks()
+vector<Rock>& Aquarium::get_rocks()
 {
-    return this->rock.get();
+    return this->rocks;
 }

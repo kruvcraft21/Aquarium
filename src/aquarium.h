@@ -3,12 +3,15 @@
 #include "fish.h"
 #include "rock.h"
 #include <memory>
+#include <vector>
+
+using namespace std;
 
 class Aquarium
 {
 private:
-    std::unique_ptr<Fish[]> fish; // Указатель на массив объектов Fish
-    std::unique_ptr<Rock[]> rock; // Указатель на массив объектов Rock
+    vector<Fish> fishes; // Указатель на массив объектов Fish
+    vector<Rock> rocks; // Указатель на массив объектов Rock
     int width; // Ширина аквариума
     int height; // Высота аквариума
 
@@ -21,5 +24,5 @@ public:
         static Aquarium instance;
         return instance;
     }
-    Rock* get_rocks();
+    vector<Rock>& get_rocks();
 };

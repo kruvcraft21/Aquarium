@@ -160,7 +160,7 @@ void CheckCollisionLines(Vector2 *line, Vector2 *points, int points_count, Obsta
 Obstacle Fish::Look()
 {
     // Получение массива скал
-    Rock *rocks = Aquarium::getInstance().get_rocks();
+    auto& rocks = Aquarium::getInstance().get_rocks();
     Obstacle danger = {0, WHITE, this->distance}; // Инициализируем объект Obstacle с начальными значениями
     Vector2 line_dir[2]; // Создаем массив для хранения точек начала и конца линии обзора
 
@@ -168,9 +168,9 @@ Obstacle Fish::Look()
     // Рассчитываем конечную точку линии обзора на основе направления и расстояния
     line_dir[1] = {Coord.x + (direction.x * this->distance), Coord.y + (direction.y * this->distance)}; 
 
-    for (int i = 0; i < MAX_ROCK; i++) // Проходим по массиву скал
+    for (auto &rock : rocks)
     {
-        Vector2 *rock_pfd = rocks[i].get_pfd(); // Получаем указатель на массив точек контура текущей скалы
+        Vector2 *rock_pfd = rock.get_pfd(); // Получаем указатель на массив точек контура текущей скалы
 
         // Вызываем функцию CheckCollisionLines() с текущими точками линии обзора и точками контура текущей скалы
         CheckCollisionLines(line_dir, rock_pfd, MAX_POINTS, danger);
@@ -178,7 +178,7 @@ Obstacle Fish::Look()
         if (danger.isdetected) // Если обнаружено препятствие
         {
             // Обновляем цвет опасности в объекте Obstacle с цветом тела текущей скалы
-            danger.color = rocks[i].get_colorbody(); 
+            danger.color = rock.get_colorbody(); 
         }
     }
 
