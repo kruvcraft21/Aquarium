@@ -30,6 +30,9 @@ protected:
     // Координаты объекта
     Vector2 Coord = {AQUARIUM_WIDTH / 2, AQUARIUM_HEIGHT / 2};
 
+protected:
+    Entity() {};
+
 public:
     // Виртуальный метод инициализации объекта
     virtual void Init() = 0;

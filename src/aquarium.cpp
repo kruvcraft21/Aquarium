@@ -18,7 +18,6 @@ void Aquarium::Init() {
     this->fishes.resize(MAX_FISH);
     // Создаем уникальный указатель на массив объектов типа Rock, выделяем память на максимальное количество скал MAX_ROCK
     this->rocks.resize(MAX_ROCK);
-
     // Запускаем основной цикл выполнения программы в методе Run()
     this->Run(); 
 }
