@@ -160,7 +160,7 @@ void CheckCollisionLines(Vector2 *line, Vector2 *points, int points_count, Obsta
 Obstacle Fish::Look()
 {
     // Получение массива скал
-    auto& rocks = Aquarium::getInstance().get_rocks();
+    const auto& rocks = Aquarium::getInstance().get_rocks();
     Obstacle danger = {0, WHITE, this->distance}; // Инициализируем объект Obstacle с начальными значениями
     Vector2 line_dir[2]; // Создаем массив для хранения точек начала и конца линии обзора
 

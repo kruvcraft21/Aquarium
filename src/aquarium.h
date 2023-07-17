@@ -28,5 +28,5 @@ public:
         static Aquarium instance;
         return instance;
     }
-    vector<Rock>& get_rocks();
+    const vector<Rock> &get_rocks() const;
 };

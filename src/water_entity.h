@@ -37,5 +37,5 @@ public:
     // Виртуальный метод инициализации объекта
     virtual void Init() = 0;
     // Метод отрисовки объекта
-    void Draw(); 
+    void Draw() const; 
 };

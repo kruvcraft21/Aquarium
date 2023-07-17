@@ -1,6 +1,10 @@
 ﻿#include "src/aquarium.h"
 
-int main(void)
+#ifdef WIN32
+int WinMain(void*)
+#else
+int main(void*)
+#endif
 {
     // Создаем экземпляр класса Aquarium и запускаем метод инициализации
     Aquarium::getInstance().Init();

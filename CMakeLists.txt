@@ -15,7 +15,16 @@ add_library(water_world STATIC
 
 target_link_libraries(water_world PUBLIC raylib)
 
-add_executable(${PROJECT_NAME} 
+
+IF(WIN32)
+SET(GUI_TYPE WIN32)
+ENDIF(WIN32)
+# Set some Apple MacOS Specific settings
+IF (APPLE)
+SET(GUI_TYPE MACOSX_BUNDLE)
+ENDIF (APPLE)
+
+add_executable(${PROJECT_NAME} ${GUI_TYPE}
     main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC 

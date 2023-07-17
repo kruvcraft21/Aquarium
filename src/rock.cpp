@@ -49,12 +49,13 @@ void Rock::Init()
 }
 
 // Метод получения указателя на массив точек для отрисовки
-Vector2* Rock::get_pfd()
+Vector2* Rock::get_pfd() const
 {
     return pfd.get();
 }
 
 // Метод получения цвета тела объекта
-Color Rock::get_colorbody() {
+const Color Rock::get_colorbody() const
+{
     return this->colorbody;
 }

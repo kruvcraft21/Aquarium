@@ -49,7 +49,7 @@ void Aquarium::Run() {
     }
 }
 
-vector<Rock>& Aquarium::get_rocks()
+const vector<Rock> &Aquarium::get_rocks() const
 {
     return this->rocks;
 }
